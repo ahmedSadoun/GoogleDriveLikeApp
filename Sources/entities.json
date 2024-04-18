@@ -43,6 +43,14 @@
             "entity_folder_sub_folders": []
           }
         ]
+      },
+      {
+        "entity_name": "file.pdf",
+        "entity_type": "FILE",
+        "entity_file_type": "",
+        "entity_file_content": "../Assets/file.pdf",
+        "entity_creation_date": "4/15/2024",
+        "entity_id": "31"
       }
     ]
   },
@@ -197,5 +205,21 @@
         "entity_folder_sub_folders": []
       }
     ]
+  },
+  {
+    "entity_name": "file1.pdf",
+    "entity_type": "FILE",
+    "entity_file_type": "",
+    "entity_file_content": "../Assets/file1.pdf",
+    "entity_creation_date": "4/15/2024",
+    "entity_id": "29"
+  },
+  {
+    "entity_name": "file2.pdf",
+    "entity_type": "FILE",
+    "entity_file_type": "",
+    "entity_file_content": "../Assets/file2.pdf",
+    "entity_creation_date": "4/15/2024",
+    "entity_id": "30"
   }
 ]

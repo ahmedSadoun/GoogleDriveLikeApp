@@ -1,5 +1,7 @@
+import { print } from "./x.mjs";
+print();
 let columnNumber = 4;
-let dataUrl = "https://8d8602d1a6964b7fb25cd5e79656ea1a.api.mockbin.io/";
+let dataUrl = "https://c5b3762fa879446cbabfc42b27b4ca6b.api.mockbin.io/";
 let rootEntities = [];
 async function fetchEntities() {
   let res = await fetch(dataUrl);
@@ -12,10 +14,10 @@ function buildColumns(entities, entityIndex) {
   let columnCounter = 1;
   for (; entityIndex < entities.length; entityIndex++) {
     let element = entities[entityIndex];
-
-    entitiesColumnString =
-      entitiesColumnString +
-      `
+    if (element.entity_type === "FOLDER") {
+      entitiesColumnString =
+        entitiesColumnString +
+        `
           <div class="col mt-2" style="max-width:25%">
             <button
               onclick="onFolderClick(this)"
@@ -51,6 +53,35 @@ function buildColumns(entities, entityIndex) {
             </button>
           </div>
        `;
+    } else {
+      entitiesColumnString =
+        entitiesColumnString +
+        `
+          <div class="col mt-2" style="max-width:25%">
+            <button
+              onclick="onFileClick(this)"
+                file-identifier=${element.entity_id}
+              type="button"
+              class="btn btn-outline-dark overflow-x-hidden"
+              style="width: 100%"
+            >
+              <div class="d-flex">
+                <div
+                  class="l-o-c-qd"
+                  role="img"
+                  aria-label="Shared Google Drive Folder"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 50 50">
+                <path d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"></path>
+                </svg>
+                </div>
+                <div class="d-flex">${element.entity_name}</div>
+              </div>
+            </button>
+          </div>
+       `;
+    }
+
     if (columnCounter == columnNumber) {
       break;
     }
@@ -99,12 +130,33 @@ function filterEntities(entities, entity_id) {
 
 function onFolderClick(folder) {
   let entity_id = folder.getAttribute("folder-identifier");
-  let currentEntities = filterEntities(rootEntities, entity_id);
-  let cacheObj = {};
-  cacheObj[`entity_${entity_id}_sub_entities`] =
-    currentEntities.entity_folder_sub_folders;
+  let currentEntity = filterEntities(rootEntities, entity_id);
 
-  sessionStorage.setItem("currentEntities", JSON.stringify(cacheObj));
-
+  addToNavigationList(currentEntity);
+  addToCacheObj(currentEntity);
   window.location.href = `./Entity-Page.html?entity_id=${entity_id}`;
+}
+
+function addToNavigationList(currentEntity) {
+  let navigationItem = {};
+  navigationItem.entity_id = currentEntity.entity_id;
+  navigationItem.entity_name = currentEntity.entity_name;
+  navigationItem.entity_type = currentEntity.entity_type;
+  sessionStorage.setItem("navigationList", JSON.stringify([navigationItem]));
+}
+function addToCacheObj(currentEntity) {
+  let cacheObj = {};
+  cacheObj[`entity_${currentEntity.entity_id}_sub_entities`] =
+    currentEntity.entity_folder_sub_folders;
+  sessionStorage.setItem("currentEntities", JSON.stringify(cacheObj));
+}
+function onFileClick(file) {
+  let entity_id = file.getAttribute("file-identifier");
+  let currentEntity = filterEntities(rootEntities, entity_id);
+  sessionStorage.setItem(
+    "fileSource",
+    JSON.stringify(currentEntity.entity_file_content)
+  );
+  addToNavigationList(currentEntity);
+  window.location.href = `../HTMl/Preview-file.html?entity_id=${entity_id}`;
 }

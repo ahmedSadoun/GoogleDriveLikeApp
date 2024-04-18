@@ -7,10 +7,10 @@ function buildColumns(entities, entityIndex) {
   let columnCounter = 1;
   for (; entityIndex < entities.length; entityIndex++) {
     let element = entities[entityIndex];
-
-    entitiesColumnString =
-      entitiesColumnString +
-      `
+    if (element.entity_type === "FOLDER") {
+      entitiesColumnString =
+        entitiesColumnString +
+        `
           <div class="col mt-2" style="max-width:25%">
             <button
               onclick="onFolderClick(this)"
@@ -46,6 +46,35 @@ function buildColumns(entities, entityIndex) {
             </button>
           </div>
        `;
+    } else {
+      entitiesColumnString =
+        entitiesColumnString +
+        `
+          <div class="col mt-2" style="max-width:25%">
+            <button
+              onclick="onFileClick(this)"
+                file-identifier=${element.entity_id}
+              type="button"
+              class="btn btn-outline-dark overflow-x-hidden"
+              style="width: 100%"
+            >
+              <div class="d-flex">
+                <div
+                  class="l-o-c-qd"
+                  role="img"
+                  aria-label="Shared Google Drive Folder"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 50 50">
+                <path d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"></path>
+                </svg>
+                </div>
+                <div class="d-flex">${element.entity_name}</div>
+              </div>
+            </button>
+          </div>
+       `;
+    }
+
     if (columnCounter == columnNumber) {
       break;
     }
@@ -101,54 +130,123 @@ function getEntityIdFromUrl() {
 
 async function onPageLoadDrawEntities() {
   let entity_id = getEntityIdFromUrl().entity_id;
-  console.log("sssssss", entity_id);
   buildEntitiesGrid(currentEntities[`entity_${entity_id}_sub_entities`]);
 }
-function updateURLParameter(url, param, paramVal) {
-  var newAdditionalURL = "";
-  var tempArray = url.split("?");
-  var baseURL = tempArray[0];
-  var additionalURL = tempArray[1];
-  var temp = "";
-  if (additionalURL) {
-    tempArray = additionalURL.split("&");
-    for (var i = 0; i < tempArray.length; i++) {
-      if (tempArray[i].split("=")[0] != param) {
-        newAdditionalURL += temp + tempArray[i];
-        temp = "&";
-      }
-    }
-  }
 
-  var rows_txt = temp + "" + param + "=" + paramVal;
-  return baseURL + "?" + newAdditionalURL + rows_txt;
+function addToNavigationList(currentEntity) {
+  let navigationList = JSON.parse(sessionStorage.getItem("navigationList"));
+  let navigationItem = {};
+  navigationItem.entity_id = currentEntity.entity_id;
+  navigationItem.entity_name = currentEntity.entity_name;
+  navigationItem.entity_type = currentEntity.entity_type;
+  navigationList.push(navigationItem);
+  sessionStorage.setItem("navigationList", JSON.stringify(navigationList));
 }
-function updateEntityIdParam(entity_id) {
-  updateURLParameter(window.location.href, "entity_id", entity_id);
-  // window.history.replaceState(
-  //   "",
-  //   "",
-  //   updateURLParameter(window.location.href, "entity_id", entity_id)
-  // );
+function addToCacheObj(currentEntity) {
+  let cacheObj = currentEntities;
+  cacheObj[`entity_${currentEntity.entity_id}_sub_entities`] =
+    currentEntity.entity_folder_sub_folders;
+  sessionStorage.setItem("currentEntities", JSON.stringify(cacheObj));
 }
+
 function onFolderClick(folder) {
   let entity_id = folder.getAttribute("folder-identifier");
   let parent_entity_id = getEntityIdFromUrl().entity_id;
 
-  let filteredEntities = filterEntities(
+  let filteredEntity = filterEntities(
     currentEntities[`entity_${parent_entity_id}_sub_entities`],
     entity_id
   );
-  // updateEntityIdParam(entity_id);
-  let cacheObj = currentEntities;
-  cacheObj[`entity_${entity_id}_sub_entities`] =
-    filteredEntities.entity_folder_sub_folders;
-
-  sessionStorage.setItem("currentEntities", JSON.stringify(cacheObj));
+  addToNavigationList(filteredEntity);
+  addToCacheObj(filteredEntity);
 
   window.location.href = `./Entity-Page.html?entity_id=${entity_id}`;
 
   // buildEntitiesGrid(currentEntities);
 }
 
+function navigationDrawer() {
+  let navigationEntities = JSON.parse(sessionStorage.getItem("navigationList"));
+
+  let navigationEntitiesBodyString = `<p>
+  <a
+    href="./Home-Page.html"
+    class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+    >Home</a
+  >
+</p>`;
+
+  for (let index = 0; index < navigationEntities.length; index++) {
+    let element = navigationEntities[index];
+    console.log(element);
+    navigationEntitiesBodyString =
+      navigationEntitiesBodyString +
+      `<svg
+        class="a-s-fa-Ha-pa c-qd"
+        width="24px"
+        height="24px"
+        viewBox="0 0 24 24"
+        focusable="false"
+        fill="currentColor"
+      >
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+      </svg>`;
+    // }
+    if (element.entity_type === "FOLDER") {
+      navigationEntitiesBodyString =
+        navigationEntitiesBodyString +
+        `
+      <p>
+        <a
+          href="./Entity-Page.html?entity_id=${element.entity_id}"
+          class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+          >${element.entity_name}</a
+        >
+      </p>`;
+    } else {
+      navigationEntitiesBodyString =
+        navigationEntitiesBodyString +
+        `
+      <p>
+        <a
+          href="./Preview-file.html?entity_id=${element.entity_id}"
+          class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+          >${element.entity_name}</a
+        >
+      </p>`;
+    }
+  }
+
+  document.getElementById("navigation").innerHTML =
+    navigationEntitiesBodyString;
+}
+function editNavigationList() {
+  let parent_entity_id = getEntityIdFromUrl().entity_id;
+  let navigationEntities = JSON.parse(sessionStorage.getItem("navigationList"));
+  for (var i = 0; i < navigationEntities.length; i++) {
+    if (navigationEntities[i].entity_id == parent_entity_id) {
+      navigationEntities.splice(i + 1, navigationEntities.length - 1); // At the current index, remove one element
+    }
+  }
+  sessionStorage.setItem("navigationList", JSON.stringify(navigationEntities));
+  navigationDrawer();
+}
+function onFileClick(file) {
+  let entity_id = file.getAttribute("file-identifier");
+  let parent_entity_id = getEntityIdFromUrl().entity_id;
+
+  let currentEntity = filterEntities(
+    currentEntities[`entity_${parent_entity_id}_sub_entities`],
+    entity_id
+  );
+  sessionStorage.setItem(
+    "fileSource",
+    JSON.stringify(currentEntity.entity_file_content)
+  );
+  addToNavigationList(currentEntity);
+
+  window.location.href = `../HTMl/Preview-file.html?entity_id=${entity_id}`;
+}
+
 onPageLoadDrawEntities();
+editNavigationList();
