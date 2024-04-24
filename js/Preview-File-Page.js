@@ -28,7 +28,6 @@ function navigationDrawer(navigationEntities) {
       navigationEntitiesBodyString;
     return;
   }
-  console.log("ssssssss", navigationEntities);
   for (let index = 0; index < navigationEntities.length; index++) {
     let element = navigationEntities[index];
 
