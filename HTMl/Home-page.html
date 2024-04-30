@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
     <script src="../CSS/master.css"></script>
+
     <script src="../Assets/jquery.min.js"></script>
+    <script src="../Assets/bootstrap.bundle.min.js"></script>
+
     <script src="../js/Global Shared JS Files/Build-Entries-Grid.js"></script>
+    <script src="../js/Global Shared JS Files/Fetch-Data.js"></script>
+    <script src="../Assets/pdf.min.js"></script>
+    <!-- <script src="../js/Global Shared JS Files/Build-ThumNails.js"></script> -->
     <script src="../js/Home-page.js"></script>
     <link rel="stylesheet" href="../Assets/bootstrap.min.css" />
   </head>
@@ -37,57 +43,75 @@
           </div>
         </div>
       </div>
-      <!-- <div class="form-check form-switch">
-        <input
-          onclick="translateButton()"
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="flexSwitchCheckChecked"
-          checked
-        />
-        <label class="form-check-label" for="flexSwitchCheckChecked"
-          >En/Ar</label
-        >
-      </div> -->
     </header>
     <!-- HEADER END -->
-
-    <div id="entitiesContainer" class="container px-4 text-center">
-      <!-- <div class="row d-flex p-2">
-        <div class="col mt-2">
-          <button
-            type="button"
-            class="btn btn-outline-dark"
-            style="width: 100%"
-          >
-            <div class="d-flex">
-              <div
-                class="l-o-c-qd"
-                role="img"
-                aria-label="Shared Google Drive Folder"
-              >
-                <svg
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                  height="24px"
-                  width="24px"
-                  fill="#5f6368"
-                  class="a-s-fa-Ha-pa"
-                >
-                  <g>
-                    <path
-                      d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-5 3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4 8h-8v-1c0-1.33 2.67-2 4-2s4 .67 4 2v1z"
-                    ></path>
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                  </g>
-                </svg>
-              </div>
-              <div class="d-flex">sssss</div>
+    <!-- ACTION LIST -->
+    <div id="actions-list" class="container d-flex justify-content-start m-3">
+      <div class="dropdown" style="margin-left: 80px">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Actions
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#modal"
+              >Create Folder</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="entitiesContainer" class="container px-4 text-center"></div>
+    <div class="modal" tabindex="-1" id="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input
+                id="folder-name-inpur-field"
+                type="text"
+                class="form-control"
+                placeholder="Folder Name"
+                aria-label="Folder Name"
+              />
             </div>
-          </button>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              onclick="onApproveCreateFolderClick(this)"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Create Folder
+            </button>
+          </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </body>
 </html>

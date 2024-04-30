@@ -1,10 +1,4 @@
-let dataUrl = " https://cerise-monkey-tutu.cyclic.app/subEntities";
-async function fetchEntities(entity_id) {
-  let res = await fetch(`${dataUrl}/${entity_id}`);
-  res = await res.json();
-  return res;
-}
-function getEntityIdFromUrl() {
+function getEntryIdFromUrl() {
   let urlString = window.location.href;
   let paramString = urlString.split("?")[1];
   let queryString = new URLSearchParams(paramString);
@@ -14,71 +8,44 @@ function getEntityIdFromUrl() {
   }
   return params;
 }
-function navigationDrawer(navigationEntities) {
-  let navigationEntitiesBodyString = `<p>
-  <a
-    href="./Home-Page.html"
-    class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-    >Home</a
-  >
-</p>`;
 
-  if (!navigationEntities || navigationEntities.length <= 0) {
-    document.getElementById("navigation").innerHTML =
-      navigationEntitiesBodyString;
-    return;
-  }
-  for (let index = 0; index < navigationEntities.length; index++) {
-    let element = navigationEntities[index];
-
-    navigationEntitiesBodyString =
-      navigationEntitiesBodyString +
-      `<svg
-        class="a-s-fa-Ha-pa c-qd"
-        width="24px"
-        height="24px"
-        viewBox="0 0 24 24"
-        focusable="false"
-        fill="currentColor"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-      </svg>`;
-    // }
-    if (element.entity_type === "FOLDER") {
-      navigationEntitiesBodyString =
-        navigationEntitiesBodyString +
-        `
-      <p>
-        <a
-          href="./Entity-Page.html?entity_id=${element.entity_id}"
-          class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-          >${element.entity_name}</a
-        >
-      </p>`;
-    } else {
-      navigationEntitiesBodyString =
-        navigationEntitiesBodyString +
-        `
-      <p>
-        <a
-          href="./Preview-file.html?entity_id=${element.entity_id}"
-          class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-          >${element.entity_name}</a
-        >
-      </p>`;
-    }
-  }
-
-  document.getElementById("navigation").innerHTML =
-    navigationEntitiesBodyString;
-}
-
-async function previewFile() {
-  let entity_id = getEntityIdFromUrl().entity_id;
-  let fileSource = await fetchEntities(entity_id);
-  navigationDrawer(fileSource.entity_path);
+async function previewFile(fileMetaData) {
+  let entry_id = getEntryIdFromUrl().entry_id;
+  let response = await fetchFileContent(entry_id);
+  const blob = await response.blob();
+  let fileViewer = {};
+  fileViewer.src = URL.createObjectURL(blob);
+  fileViewer.type = response.headers.get("Content-Type");
+  console.log(fileViewer.src);
   document.getElementById(
     "previewFile"
-  ).innerHTML = ` <embed id="filePreviewer" src=${fileSource.entity_file_content}  width="800px" height="1000px" />`;
+  ).innerHTML = ` <embed id="filePreviewer" src="${fileViewer.src}#toolbar=0"   type="${fileViewer.type}" width="800" height="800" />`;
+  download(fileViewer.src, fileMetaData);
 }
-previewFile();
+
+(async function () {
+  let entry_id = getEntryIdFromUrl().entry_id;
+  let x = await Promise.all(
+    [
+      async () => {
+        let fileMetaData = await fetchEntryMetaData(entry_id);
+
+        previewFile(fileMetaData.entry);
+        // download(fileUrl, fileMetaData.entry);
+      },
+      async () => {
+        let navigationList = await fetchEntryNavigation(entry_id);
+        navigationDrawer(navigationList);
+      },
+    ].map((sequence) => sequence())
+  );
+})();
+
+function download(blobURL, metadata) {
+  const fileLink = document.createElement("a");
+  fileLink.href = blobURL;
+  fileLink.download = metadata.name; // Customize the filename
+  fileLink.textContent = "Download File";
+  // Append the link to the DOM
+  document.getElementById("actions-list").appendChild(fileLink);
+}

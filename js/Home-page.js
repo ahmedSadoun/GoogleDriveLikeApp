@@ -1,55 +1,36 @@
-let columnNumber = 4;
-let dataUrl = " http://localhost:3000";
-let rootEntities = [];
-// async function fetchEntities() {
-//   let res = await fetch(dataUrl);
-//   res = await res.json();
-//   return res;
-// }
-async function fetchRootEntities() {
-  let res = await $.ajax({
-    url: dataUrl + "/alFresco/root",
-    type: "GET",
-    dataType: "json",
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
-    },
-  });
-  return res.list.entries;
-}
-
+// Instantly called function
+// used in order to be able to use async and await
+let homeRootEntities = [];
 (async function () {
-  rootEntities = await fetchRootEntities();
-
-  buildEntitiesGrid(rootEntities, "entitiesContainer");
+  homeRootEntities = await fetchAlfrescoEntries("/alFresco/root");
+  console.log(homeRootEntities);
+  buildEntitiesGrid(homeRootEntities, "entitiesContainer");
 })();
 
 function onFolderClick(folder) {
-  let entity_id = folder.getAttribute("entry-identifier");
-  // let currentEntity = filterEntities(rootEntities, entity_id);
-
-  // addToCacheObj(currentEntity);
-  window.location.href = `./Entity-Page.html?entity_id=${entity_id}`;
-}
-
-function addToCacheObj(currentEntity) {
-  let cacheObj = {};
-  cacheObj[`entity_${currentEntity.entity_id}_sub_entities`] =
-    currentEntity.entity_folder_sub_folders;
-  sessionStorage.setItem("currentEntities", JSON.stringify(cacheObj));
+  let entry_id = folder.getAttribute("entry-identifier");
+  window.location.href = `./Entity-Page.html?entry_id=${entry_id}`;
 }
 
 function onFileClick(file) {
-  let entity_id = file.getAttribute("entry-identifier");
-  let currentEntity = filterEntities(rootEntities, entity_id);
-  sessionStorage.setItem(
-    "fileSource",
-    JSON.stringify(currentEntity.entity_file_content)
-  );
+  let entry_id = file.getAttribute("entry-identifier");
 
-  window.location.href = `../HTMl/Preview-file.html?entity_id=${entity_id}`;
+  window.location.href = `../HTMl/Preview-file.html?entry_id=${entry_id}`;
 }
+function onApproveCreateFolderClick() {
+  let folderName = document
+    .getElementById("folder-name-inpur-field")
+    .value.trim();
+  createNewFolder("-root-", folderName).then((res) => {
+    homeRootEntities.push(res);
+    // console.log(res);
+    document.getElementById("folder-name-inpur-field").value = "";
 
+    buildEntitiesGrid(homeRootEntities, "entitiesContainer");
+    // document.getElementById("entitiesContainer").;
+  });
+  // onCloseDialogClick();
+}
 // function translateButton() {
 //   if (localStorage.getItem("locale") === "En") {
 //     localStorage.setItem("locale", "Ar");
