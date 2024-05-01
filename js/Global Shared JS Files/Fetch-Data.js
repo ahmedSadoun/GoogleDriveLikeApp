@@ -116,5 +116,34 @@ async function createNewFolder(entry_id, folderName) {
     return null; // Handle the error by returning null or any other appropriate value
   }
 }
+async function createUploadFile(entry_id, formData) {
+  try {
+    const response = await $.ajax({
+      url: dataUrl + "/alFresco/uploadFile/" + entry_id,
+      method: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+    });
+    console.log("upload file response", response);
+    alert("File uploaded successfully.");
+    return response;
+  } catch (error) {
+    console.error("Error uploading folder:", error);
+    return null; // Handle the error by returning null or any other appropriate value
+  }
+}
+async function deleteNode(entry_id) {
+  try {
+    const response = await $.ajax({
+      url: dataUrl + "/alFresco/delete/" + entry_id,
+      method: "POST",
+    });
+    return response;
+  } catch (error) {
+    console.error("Error deleting folder:", error);
+    return null; // Handle the error by returning null or any other appropriate value
+  }
+}
 
 // createNewFolder("7555e8f5-ac1d-46a7-a52d-78096fdef8e8", "eeeeeeee");

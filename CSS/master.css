@@ -1,0 +1,5 @@
+.hover-effect:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Transparent black background */
+    border: 1px solid #ccc; /* Border style */
+  }
+

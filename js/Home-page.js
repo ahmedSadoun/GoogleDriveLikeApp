@@ -3,7 +3,7 @@
 let homeRootEntities = [];
 (async function () {
   homeRootEntities = await fetchAlfrescoEntries("/alFresco/root");
-  console.log(homeRootEntities);
+  // console.log(homeRootEntities);
   buildEntitiesGrid(homeRootEntities, "entitiesContainer");
 })();
 
@@ -22,15 +22,83 @@ function onApproveCreateFolderClick() {
     .getElementById("folder-name-inpur-field")
     .value.trim();
   createNewFolder("-root-", folderName).then((res) => {
-    homeRootEntities.push(res);
-    // console.log(res);
-    document.getElementById("folder-name-inpur-field").value = "";
-
-    buildEntitiesGrid(homeRootEntities, "entitiesContainer");
+    if (res.entry) {
+      document.getElementById("folder-name-inpur-field").value = "";
+      rerenderAfterNodeCreation(res);
+    }
     // document.getElementById("entitiesContainer").;
   });
   // onCloseDialogClick();
 }
+function rerenderAfterNodeCreation(res) {
+  homeRootEntities.push(res);
+  // console.log(res);
+
+  buildEntitiesGrid(homeRootEntities, "entitiesContainer");
+}
+// On delete functions
+function removeSelectedEntries(selectionsIdsList) {
+  // Iterate through the homeRootEntities list
+  for (let i = 0; i < homeRootEntities.length; i++) {
+    // Get the id of the current item
+    let itemId = homeRootEntities[i].entry.id;
+
+    // Check if the id exists in the selectionsIdsList
+    let existsInSelections = selectionsIdsList.some((id) => id === itemId);
+
+    // If the id exists in the selectionsIdsList, remove the item from homeRootEntities
+    if (existsInSelections) {
+      homeRootEntities.splice(i, 1); // Remove the item from homeRootEntities
+      i--; // Adjust the loop counter since we removed an item
+    }
+  }
+
+  // Return the modified homeRootEntities list
+  return homeRootEntities;
+}
+function rerenderAfterNodeDeletion(selectionIds) {
+  let afterDeletionHomeRootEntities = removeSelectedEntries(selectionIds);
+  // console.log("aaaaaaaaaaaaa", afterDeletionHomeRootEntities);
+  buildEntitiesGrid(afterDeletionHomeRootEntities, "entitiesContainer");
+}
+function onUploadButtonClick() {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please select a file.");
+    return;
+  }
+  // console.log("file is ", file.name);
+  let isFileExists = checkIfFileExists(file.name);
+  // console.log("isFileExists", isFileExists);
+  if (isFileExists) {
+    alert("The file you'r trying to upload is already existed");
+    return;
+  }
+  UploadFile("-root-", file).then((res) => {
+    // console.log(res);
+    // document.getElementById("folder-name-inpur-field").value = "";
+
+    if (res.entry) {
+      $("#fileInput").val("");
+      rerenderAfterNodeCreation(res);
+    }
+  });
+  // onCloseDialogClick();
+}
+function checkIfFileExists(fileName) {
+  let result = homeRootEntities.some((element) => {
+    return element.entry.name.toLowerCase() === fileName.toLowerCase();
+  });
+  return result;
+}
+
+function deleteSelectionButtonClick() {
+  deleteSelections().then((res) => {
+    rerenderAfterNodeDeletion(res);
+  });
+}
+
 // function translateButton() {
 //   if (localStorage.getItem("locale") === "En") {
 //     localStorage.setItem("locale", "Ar");
