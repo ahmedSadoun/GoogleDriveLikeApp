@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Awesome Form</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css"
+    />
+    <script src="../js/Global Shared JS Files/Fetch-Data.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/js/multi-select-tag.js"></script>
+    <script src="../Assets/jquery.min.js"></script>
+
+    <script src="../Assets/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../Assets/bootstrap.min.css" />
+    <script src="../js/Meta-Data-Form.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <form action="/submit-form" id="meta-data-form" method="post">
+        <div class="form-group">
+          <label for="name">Name: *</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            value="test.txt"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author:</label>
+          <input type="text" id="author" name="author" class="form-control" />
+        </div>
+      </form>
+      <button
+        type="button"
+        onclick="onCancelClick()"
+        class="btn btn-light mt-2"
+      >
+        Cancel
+      </button>
+      <button onclick="onSubmitClick()" class="btn btn-primary mt-2">
+        Submit
+      </button>
+    </div>
+  </body>
+</html>

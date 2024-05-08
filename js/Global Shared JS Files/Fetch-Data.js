@@ -45,6 +45,20 @@ async function fetchFileContent(entry_id) {
     console.error("Error fetching file:", error);
   }
 }
+async function fetchFileContentThumbNail(entry_id, fileContentType) {
+  try {
+    // just return the url and the image tag should grab the image by it self
+    return (
+      dataUrl +
+      "/alFresco/nodeContent/thumbnail/" +
+      entry_id +
+      "/" +
+      fileContentType
+    );
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+}
 
 // Function to fetch image and generate thumbnail
 async function fetchAndGenerateThumbnail(entry_id, maxWidth, maxHeight) {
@@ -103,7 +117,7 @@ async function createNewFolder(entry_id, folderName) {
       folderName: folderName,
       entry_id: entry_id,
     };
-    console.log(data);
+    // console.log(data);
     let res = await $.ajax({
       url: dataUrl + "/alFresco/createFolder",
       type: "POST",
@@ -125,7 +139,7 @@ async function createUploadFile(entry_id, formData) {
       contentType: false,
       processData: false,
     });
-    console.log("upload file response", response);
+    // console.log("upload file response", response);
     alert("File uploaded successfully.");
     return response;
   } catch (error) {
@@ -143,6 +157,35 @@ async function deleteNode(entry_id) {
   } catch (error) {
     console.error("Error deleting folder:", error);
     return null; // Handle the error by returning null or any other appropriate value
+  }
+}
+
+async function fetchFileContentMetaData(entry_id) {
+  try {
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/fileNodeMetaData/" + entry_id,
+      type: "GET",
+      dataType: "json",
+      // beforeSend: function (xhr) {
+      //   xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
+      // },
+    });
+    return res;
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+}
+async function updateFileContentMetaData(entry_id, body) {
+  try {
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/fileNodeMetaData/" + entry_id,
+      type: "PUT",
+      data: JSON.stringify(body), // Convert data object to JSON string
+      contentType: "application/json", // Set the content type to application/json
+    });
+    return res;
+  } catch (error) {
+    console.error("Error fetching file:", error);
   }
 }
 

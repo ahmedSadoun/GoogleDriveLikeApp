@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Preview File</title>
-    <script src="../CSS/master.css"></script>
+    <link rel="stylesheet" href="../CSS/master.css" />
     <script src="../Assets/jquery.min.js"></script>
     <link rel="stylesheet" href="../Assets/bootstrap.min.css" />
     <script src="../js/Global Shared JS Files/Build-Entries-Grid.js"></script>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </header>
-   
+
     <!-- HEADER END -->
     <div id="navigation-bar" class="d-inline-flex mx-5">
       <!-- Navigation List -->
@@ -42,19 +42,20 @@
       class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
       >Home</a
     > -->
-  </p>
     </div>
- 
-    <div id="actions-list" class="container d-flex justify-content-end m-3 "> </div>
-    <div id="previewFile"style="width: fit-content" class="container px-4 text-center border border-dark p-2 bg-light ">
-     
+
+    <div id="actions-list" class="container d-flex justify-content-end m-3">
+      <a onclick="onPropertiesClick()" class="mx-2">Properties</a>
     </div>
-    <br>
-    <br>
-    <br>
-  
+    <div
+      id="previewFile"
+      style="width: fit-content"
+      class="container px-4 text-center border border-dark p-2 bg-light"
+    ></div>
+    <br />
+    <br />
+    <br />
+
     <script src="../js/Preview-File-Page.js"></script>
   </body>
 </html>
-
-

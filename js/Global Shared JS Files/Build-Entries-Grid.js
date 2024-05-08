@@ -1,5 +1,29 @@
 let columnNumber = 4;
 let supportedThumNailMediaType = ["application/pdf", "image/png"];
+const mimeThumbnail = {
+  "image/jpeg": "imgpreview",
+  "image/png": "imgpreview",
+  "image/gif": "imgpreview",
+  "image/bmp": "imgpreview",
+  "image/tiff": "imgpreview",
+  "application/msword": "imgpreview",
+  "application/vnd.ms-excel": "imgpreview",
+  "application/vnd.ms-powerpoint": "imgpreview",
+  "application/pdf": "imgpreview",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+    "doclib",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "doclib",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+    "doclib",
+  "audio/mpeg": "avm",
+  "audio/x-wav": "avm",
+  "video/mp4": "avm",
+  "video/quicktime": "avm",
+  "video/x-msvideo": "avm",
+  "text/plain": "imgpreview",
+  "text/html": "imgpreview",
+};
+
 function getAllFileTags() {
   // Select all elements whose IDs start with "file_"
   const fileTags = document.querySelectorAll('[id^="file_"]');
@@ -29,15 +53,13 @@ async function generateThumNail() {
     let entry_id = extractEntryId(elementId);
     // console.log("entry_id", entry_id);
     if (entry_id) {
-      if (supportedThumNailMediaType.includes(mimeType)) {
-        fetchAndGenerateThumbnail(entry_id, maxWidth, maxHeight)
-          .then((thumbnailUrl) => {
-            // Use thumbnail URL as needed (e.g., display it in an <img> tag)
-            element.setAttribute("src", thumbnailUrl);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+      let thumbnailType = mimeThumbnail[mimeType];
+      if (thumbnailType) {
+        fetchFileContentThumbNail(entry_id, thumbnailType).then(
+          (thumbnailURL) => {
+            element.setAttribute("src", thumbnailURL);
+          }
+        );
       }
     } else {
       console.log("Entry Id is null ya gama3a");
@@ -116,7 +138,6 @@ function buildColumns(entities, entityIndex) {
         </button>
     </div>
          `;
-      // generateThumNail(`file_${entityIndex}`, element.id);
     }
 
     if (columnCounter == columnNumber) {

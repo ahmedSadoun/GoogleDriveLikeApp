@@ -16,7 +16,7 @@ async function previewFile(fileMetaData) {
   let fileViewer = {};
   fileViewer.src = URL.createObjectURL(blob);
   fileViewer.type = response.headers.get("Content-Type");
-  console.log(fileViewer.src);
+  // console.log(fileViewer.src);
   document.getElementById(
     "previewFile"
   ).innerHTML = ` <embed id="filePreviewer" src="${fileViewer.src}#toolbar=0"   type="${fileViewer.type}" width="800" height="800" />`;
@@ -48,4 +48,10 @@ function download(blobURL, metadata) {
   fileLink.textContent = "Download File";
   // Append the link to the DOM
   document.getElementById("actions-list").appendChild(fileLink);
+}
+
+function onPropertiesClick() {
+  let entry_id = getEntryIdFromUrl().entry_id;
+  console.log("SDfsadfadfasdf ", entry_id);
+  window.location.href = `../HTMl/Meta-Data-Form.html?entry_id=${entry_id}`;
 }
