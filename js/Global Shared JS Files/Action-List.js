@@ -21,7 +21,7 @@ async function deleteSelections() {
     let entryIdsList = [];
     let selections = getAllCheckedCheckboxes();
     if (selections && selections.length <= 0) {
-      alert("Select Which Files To Delete.");
+      alert("Select which files to delete.");
       return;
     }
     selections.forEach((element) => {

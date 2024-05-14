@@ -12,17 +12,22 @@ function elementsFactory(elementProperty, elementKey) {
 
     "d:text-list": ` <div class="form-group">
     <label for=${elementProperty.id}>${elementProperty.title}</label>
-    <select name=${elementProperty.id} class="form-control" id=${
+    <select name=${elementProperty.id} class="form-control form-select" id=${
       elementProperty.id
     }>
-     ${elementProperty.isMultiValued && buildSelectOptions(elementProperty)}
+     ${isMultiValuedf(elementProperty) && buildSelectOptions(elementProperty)}
     </select>
     </div>`,
     "d:date": ` <div class="form-group">
   <label for=${elementProperty.id}>${elementProperty.title}</label>
   <input name=${elementProperty.id} type="date" class="form-control" id=${elementProperty.id} />
   </div>`,
-    "d:mltext": ``,
+    "d:mltext": `
+    <div class="form-group">
+          <label for=${elementProperty.id}>${elementProperty.title}</label>
+          <textarea id=${elementProperty.id} name=${elementProperty.id} class="form-control"></textarea>
+        </div>
+    `,
     "d:int": ``,
     "d:long": ``,
     "d:float": ``,
@@ -43,8 +48,18 @@ function buildSelectOptions(list) {
   });
   return optionsList;
 }
-
+function isMultiValuedf(property) {
+  if (property.isMultiValued) {
+    return true;
+  } else if (property.constraints && property.constraints[0]?.type === "LIST") {
+    return true;
+  }
+  return false;
+}
 async function createFormFields(type_id) {
+  if (type_id === "cm:content") {
+    return [];
+  }
   let res = await fetchTypeProperties(type_id);
   //   console.log("Ssssssssss", res.entry.properties);
   //   return;
@@ -55,9 +70,11 @@ async function createFormFields(type_id) {
   let modelPrefix = res.entry.model.namespacePrefix;
   res.entry.properties.forEach((property) => {
     if (property.id.includes(modelPrefix)) {
-      let elementKey = property.isMultiValued
+      let isMultiValued = isMultiValuedf(property);
+      let elementKey = isMultiValued
         ? property.dataType + "-list"
         : property.dataType;
+      console.log("element Key ", elementKey);
       let element = elementsFactory(property, elementKey);
       formFieldsKeysList.push({ id: property.id, dataType: property.dataType });
       form = form + element;

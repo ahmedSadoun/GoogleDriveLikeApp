@@ -13,16 +13,12 @@ fetchFileContentMetaData(entry_id).then((res) => {
     contentTypeFormFieldsKeysList = keysList;
     // map the values of these props to its fields
     contentTypeFormFieldsKeysList.forEach((element) => {
-      console.log("sssssssssss", element);
       if (["d:date"].includes(element.dataType)) {
-        console.log(
-          "sssssssssss",
-          res.entry.properties[element.id].split("T")[0]
-        );
-
         form[element.id].value = res.entry.properties[element.id].split("T")[0];
       } else {
-        form[element.id].value = res.entry.properties[element.id];
+        if (form[element.id]) {
+          form[element.id].value = res.entry.properties[element.id] || "";
+        }
       }
     });
   });
@@ -41,7 +37,7 @@ function onSubmitClick() {
   newProperties.properties["cm:author"] = form["author"].value;
   contentTypeFormFieldsKeysList.forEach((element) => {
     // console.log("sssssssssss", );
-    newProperties.properties[element.id] = form[element.id].value;
+    newProperties.properties[element.id] = form[element.id]?.value;
   });
   //   newProperties["cm:mimeType"] = form["mimetype"].value;
   // console.log("Ssssssssssss", newProperties);

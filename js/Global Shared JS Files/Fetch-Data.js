@@ -203,5 +203,17 @@ async function updateFileContentMetaData(entry_id, body) {
     console.error("Error fetching file:", error);
   }
 }
-
+async function fetchTypes() {
+  try {
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/fetchTypes",
+      type: "GET",
+    });
+    // console.log("Ssssssssssssssssss", res);
+    return res;
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+}
+// fetchTypes();
 // createNewFolder("7555e8f5-ac1d-46a7-a52d-78096fdef8e8", "eeeeeeee");

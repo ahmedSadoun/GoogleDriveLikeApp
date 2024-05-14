@@ -4,6 +4,7 @@ let homeRootEntities = [];
 (async function () {
   homeRootEntities = await fetchAlfrescoEntries("/alFresco/root");
   // console.log(homeRootEntities);
+  callHeaderDrawer();
   buildEntitiesGrid(homeRootEntities, "entitiesContainer");
 })();
 
@@ -62,6 +63,13 @@ function rerenderAfterNodeDeletion(selectionIds) {
   buildEntitiesGrid(afterDeletionHomeRootEntities, "entitiesContainer");
 }
 function onUploadButtonClick() {
+  // onCloseDialogClick();
+  $("#upload-file-modal").modal("show");
+}
+function onUploadFileSubmitClick() {
+  startUploadingFile();
+}
+function startUploadingFile() {
   const fileInput = document.getElementById("fileInput");
   const file = fileInput.files[0];
   if (!file) {
@@ -84,7 +92,6 @@ function onUploadButtonClick() {
       rerenderAfterNodeCreation(res);
     }
   });
-  // onCloseDialogClick();
 }
 function checkIfFileExists(fileName) {
   let result = homeRootEntities.some((element) => {
@@ -98,7 +105,12 @@ function deleteSelectionButtonClick() {
     rerenderAfterNodeDeletion(res);
   });
 }
+function onCloseUploadFileModalClick() {}
 
+function callHeaderDrawer() {
+  let header = headerDrawer();
+  document.getElementById("header").innerHTML = header;
+}
 // function translateButton() {
 //   if (localStorage.getItem("locale") === "En") {
 //     localStorage.setItem("locale", "Ar");

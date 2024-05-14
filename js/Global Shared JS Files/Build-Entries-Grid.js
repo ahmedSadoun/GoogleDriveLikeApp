@@ -71,13 +71,13 @@ async function generateThumNail() {
 
 function buildColumns(entities, entityIndex) {
   let entitiesColumnString = "";
-  let marginclass = ``;
+  // let marginclass = ``;
   let columnCounter = 1;
   for (; entityIndex < entities.length; entityIndex++) {
     let element = entities[entityIndex].entry;
-    if (entityIndex !== 0) {
-      marginclass = " mt-2";
-    }
+    // if (entityIndex !== 0) {
+    //   // marginclass = " mt-2";
+    // }
     if (element.isFolder) {
       entitiesColumnString =
         entitiesColumnString +
@@ -140,7 +140,7 @@ function buildEntitiesGrid(entities, containerId) {
   let entitiesBodyString = "";
   let entityIndex = 0;
   for (let index = 0; index < rowsCount; index++) {
-    let marginclass = index !== 0 ? "mt-5" : "";
+    // let marginclass = index !== 0 ? "mt-5" : "";
 
     entitiesBodyString =
       entitiesBodyString +

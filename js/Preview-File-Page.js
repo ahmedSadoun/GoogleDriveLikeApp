@@ -25,6 +25,7 @@ async function previewFile(fileMetaData) {
 
 (async function () {
   let entry_id = getEntryIdFromUrl().entry_id;
+  callHeaderDrawer();
   let x = await Promise.all(
     [
       async () => {
@@ -55,17 +56,55 @@ function onPropertiesClick() {
   // console.log("SDfsadfadfasdf ", entry_id);
   window.location.href = `../HTMl/Meta-Data-Form.html?entry_id=${entry_id}`;
 }
-
+function createSelectOptions(payload) {
+  const entries = payload.list.entries;
+  const selectOptions = entries.map((entry) => {
+    const id = entry.entry.id;
+    const title = entry.entry.title;
+    return `<option value="${id}">${title}</option>`;
+  });
+  return selectOptions.join("");
+}
+function buildContentTypeSelectOptions(optionsList) {
+  let options = createSelectOptions(optionsList);
+  const selectElement = document.getElementById("content-type-select-id");
+  selectElement.innerHTML = options;
+}
 function onChangeContentTypeClick() {
-  console.log("SDfsafsa", $("#xmodal"));
-  $("#xmodal").show();
+  $("#exampleModalToggle").modal("show");
+  fetchTypes().then((res) => {
+    // console.log("SDfsafsa", $("#exampleModalToggle"));
+    $("#exampleModalToggle").modal("show");
+    buildContentTypeSelectOptions(res);
+  });
+  // $("#xmodal").show();
 }
 // modal or dialog submit button
 
 function onSubmitContentTypeClick() {
-  $("#xmodal").hide();
+  // console.log("Submit Button");
+  let entry_id = getEntryIdFromUrl().entry_id;
+  let contentType = document.getElementById("content-type-select-id").value;
+  let body = {
+    nodeType: contentType,
+  };
+  updateFileContentMetaData(entry_id, body).then((res) => {
+    if (res.statusCode && res.statusCode == 400) {
+      alert("Error Happened.");
+      return;
+    }
+    alert("Content Type Updated Successfully.");
+  });
+  $("#exampleModalToggle").hide();
 }
 // modal or dialog close button
 function onCloseContentTypeClick() {
-  $("#xmodal").hide();
+  console.log("Close Button");
+
+  $("#exampleModalToggle").hide();
+}
+
+function callHeaderDrawer() {
+  let header = headerDrawer();
+  document.getElementById("header").innerHTML = header;
 }

@@ -13,6 +13,7 @@ let currentEntities = [];
 (async function () {
   let entry_id = getEntryIdFromUrl().entry_id;
   entry_id = removeHashFromString(entry_id);
+  callHeaderDrawer();
   let x = await Promise.all(
     [
       async () => {
@@ -74,35 +75,6 @@ function rerenderAfterNodeCreation(res) {
   buildEntitiesGrid(currentEntities, "entitiesContainer");
 }
 
-function onUploadButtonClick() {
-  const fileInput = document.getElementById("fileInput");
-  let entry_id = getEntryIdFromUrl().entry_id;
-  entry_id = removeHashFromString(entry_id);
-  const file = fileInput.files[0];
-
-  if (!file) {
-    alert("Please select a file.");
-    return;
-  }
-
-  // console.log("file is ", file.name);
-  let isFileExists = checkIfFileExists(file.name);
-  // console.log("isFileExists", isFileExists);
-  if (isFileExists) {
-    alert("The file you'r trying to upload is already existed");
-    return;
-  }
-  UploadFile(entry_id, file).then((res) => {
-    console.log(res);
-    // document.getElementById("folder-name-inpur-field").value = "";
-
-    if (res.entry) {
-      $("#fileInput").val("");
-      rerenderAfterNodeCreation(res);
-    }
-  });
-  // onCloseDialogClick();
-}
 function checkIfFileExists(fileName) {
   let result = currentEntities.some((element) => {
     return element.entry.name.toLowerCase() === fileName.toLowerCase();
@@ -131,7 +103,7 @@ function removeSelectedEntries(selectionsIdsList) {
 }
 function rerenderAfterNodeDeletion(selectionIds) {
   let afterDeletionCurrentEntities = removeSelectedEntries(selectionIds);
-  console.log("aaaaaaaaaaaaa", afterDeletionCurrentEntities);
+  // console.log("aaaaaaaaaaaaa", afterDeletionCurrentEntities);
   buildEntitiesGrid(afterDeletionCurrentEntities, "entitiesContainer");
 }
 
@@ -140,4 +112,46 @@ function deleteSelectionButtonClick() {
   deleteSelections().then((res) => {
     rerenderAfterNodeDeletion(res);
   });
+}
+
+function onCloseUploadFileModalClick() {}
+
+function onUploadButtonClick() {
+  // onCloseDialogClick();
+  $("#upload-file-modal").modal("show");
+}
+function onUploadFileSubmitClick() {
+  startUploadingFile();
+}
+function startUploadingFile() {
+  const fileInput = document.getElementById("fileInput");
+  let entry_id = getEntryIdFromUrl().entry_id;
+  entry_id = removeHashFromString(entry_id);
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select a file.");
+    return;
+  }
+
+  // console.log("file is ", file.name);
+  let isFileExists = checkIfFileExists(file.name);
+  // console.log("isFileExists", isFileExists);
+  if (isFileExists) {
+    alert("The file you'r trying to upload is already existed");
+    return;
+  }
+  UploadFile(entry_id, file).then((res) => {
+    // console.log(res);
+    // document.getElementById("folder-name-inpur-field").value = "";
+
+    if (res.entry) {
+      $("#fileInput").val("");
+      rerenderAfterNodeCreation(res);
+    }
+  });
+}
+function callHeaderDrawer() {
+  let header = headerDrawer();
+  document.getElementById("header").innerHTML = header;
 }

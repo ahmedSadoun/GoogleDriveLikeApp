@@ -12,29 +12,17 @@
     <script src="../js/Global Shared JS Files/Build-Entries-Grid.js"></script>
     <script src="../js/Global Shared JS Files/Fetch-Data.js"></script>
     <script src="../js/Global Shared JS Files/Navigation-Bar-Drawer.js"></script>
+    <script src="../js/Global Shared JS Files/Header-Search-Bar.js"></script>
   </head>
   <body>
-    <header class="p-3 mb-3 border-bottom" style="min-width: 500px">
-      <div class="container" bis_skin_checked="1">
-        <div
-          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
-          bis_skin_checked="1"
-        >
-          <div class="justify-content-center d-flex" style="width: 100%">
-            <input
-              style="width: 80%"
-              type="search"
-              class="form-control"
-              placeholder="Search..."
-              aria-label="Search"
-            />
-            <button type="button" class="btn btn-dark mx-1" style="width: 20%">
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+    <!-- HEADER START -->
+    <header
+      class="p-3 mb-3 border-bottom"
+      style="min-width: 500px"
+      id="header"
+    ></header>
+
+    <!-- HEADER END -->
 
     <!-- HEADER END -->
     <div id="navigation-bar" class="d-inline-flex mx-5">
@@ -47,7 +35,10 @@
     </div>
 
     <div id="actions-list" class="container d-flex justify-content-end m-3">
-      <a onclick="onChangeContentTypeClick()" class="mx-2"
+      <!-- <a onclick="onChangeContentTypeClick()" class="mx-2"
+        >Change Content Type</a
+      > -->
+      <a class="btn-primary" role="button" onclick="onChangeContentTypeClick()"
         >Change Content Type</a
       >
       <a onclick="onPropertiesClick()" class="mx-2">Properties</a>
@@ -55,40 +46,52 @@
     <div
       id="previewFile"
       style="width: fit-content"
-      class="container px-4 text-center border border-dark p-2 bg-light"
+      class="container px-4 text-center border border-dark p-2 bg-light overflow-hidden"
     ></div>
     <br />
     <br />
     <br />
-    <!-- MODAL -->
-    <div class="modal" tabindex="-1" id="xmodal">
-      <div class="modal-dialog">
+    <script src="../js/Preview-File-Page.js"></script>
+    <!-- Modal Begins -->
+    <div
+      class="modal fade"
+      id="exampleModalToggle"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title"></h5>
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+              Change File Content Type
+            </h1>
             <button
               type="button"
               class="btn-close"
-              data-bs-dismiss="xmodal"
-              onclick="onCloseContentTypeClick()"
+              data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
           <div class="modal-body">
-            <div class="input-group mb-3">
-                <label for="content-types">Content Type</label>
-                <select class="form-control" id="content-types">
-                    <option value="">Select gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
+            <div class="mb-3">
+              <label for="content-type-select-id" class="form-label"
+                >Content Type</label
+              >
+              <select
+                id="content-type-select-id"
+                class="form-select"
+                aria-label="Default select example"
+              ></select>
+            </div>
           </div>
           <div class="modal-footer">
             <button
               type="button"
+              data-bs-target="#exampleModalToggle"
               onclick="onCloseContentTypeClick()"
               class="btn btn-secondary"
-              data-bs-dismiss="xmodal"
+              data-bs-dismiss="modal"
             >
               Close
             </button>
@@ -96,7 +99,7 @@
               type="button"
               onclick="onSubmitContentTypeClick()"
               class="btn btn-primary"
-              data-bs-dismiss="xmodal"
+              data-bs-dismiss="modal"
             >
               Submit
             </button>
@@ -104,6 +107,17 @@
         </div>
       </div>
     </div>
-    <script src="../js/Preview-File-Page.js"></script>
+    <!-- Modal Ends -->
   </body>
+
+  <!-- New Modal Begins -->
+
+  <!-- <a
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    href="#exampleModalToggle"
+    role="button"
+    >Open first modal</a
+  > -->
+  <!-- New Modal Ends -->
 </html>

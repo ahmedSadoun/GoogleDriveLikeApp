@@ -1,4 +1,6 @@
 function navigationDrawer(navigationEntities) {
+  return;
+
   let navigationEntitiesBodyString = `<p>
     <a
     href="./Home-Page.html"
