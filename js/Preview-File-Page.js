@@ -52,6 +52,20 @@ function download(blobURL, metadata) {
 
 function onPropertiesClick() {
   let entry_id = getEntryIdFromUrl().entry_id;
-  console.log("SDfsadfadfasdf ", entry_id);
+  // console.log("SDfsadfadfasdf ", entry_id);
   window.location.href = `../HTMl/Meta-Data-Form.html?entry_id=${entry_id}`;
+}
+
+function onChangeContentTypeClick() {
+  console.log("SDfsafsa", $("#xmodal"));
+  $("#xmodal").show();
+}
+// modal or dialog submit button
+
+function onSubmitContentTypeClick() {
+  $("#xmodal").hide();
+}
+// modal or dialog close button
+function onCloseContentTypeClick() {
+  $("#xmodal").hide();
 }

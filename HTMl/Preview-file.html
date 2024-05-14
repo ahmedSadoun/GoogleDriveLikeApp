@@ -6,6 +6,8 @@
     <title>Preview File</title>
     <link rel="stylesheet" href="../CSS/master.css" />
     <script src="../Assets/jquery.min.js"></script>
+    <script src="../Assets/bootstrap.bundle.min.js"></script>
+
     <link rel="stylesheet" href="../Assets/bootstrap.min.css" />
     <script src="../js/Global Shared JS Files/Build-Entries-Grid.js"></script>
     <script src="../js/Global Shared JS Files/Fetch-Data.js"></script>
@@ -45,6 +47,9 @@
     </div>
 
     <div id="actions-list" class="container d-flex justify-content-end m-3">
+      <a onclick="onChangeContentTypeClick()" class="mx-2"
+        >Change Content Type</a
+      >
       <a onclick="onPropertiesClick()" class="mx-2">Properties</a>
     </div>
     <div
@@ -55,7 +60,50 @@
     <br />
     <br />
     <br />
-
+    <!-- MODAL -->
+    <div class="modal" tabindex="-1" id="xmodal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="xmodal"
+              onclick="onCloseContentTypeClick()"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+                <label for="content-types">Content Type</label>
+                <select class="form-control" id="content-types">
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              onclick="onCloseContentTypeClick()"
+              class="btn btn-secondary"
+              data-bs-dismiss="xmodal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              onclick="onSubmitContentTypeClick()"
+              class="btn btn-primary"
+              data-bs-dismiss="xmodal"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="../js/Preview-File-Page.js"></script>
   </body>
 </html>

@@ -1,25 +1,51 @@
 let entry_id = getEntryIdFromUrl().entry_id;
+let contentTypeFormFieldsKeysList = [];
 fetchFileContentMetaData(entry_id).then((res) => {
   // Accessing the form
   var form = document.getElementById("meta-data-form");
   // Accessing form fields
+  // console.log("res, ", res);
   form["name"].value = res.entry.name || "";
   form["title"].value = res.entry.properties["cm:title"] || "";
   form["description"].value = res.entry.properties["cm:description"] || "";
   form["author"].value = res.entry.properties["cm:author"] || "";
+  createFormFields(res.entry.nodeType).then((keysList) => {
+    contentTypeFormFieldsKeysList = keysList;
+    // map the values of these props to its fields
+    contentTypeFormFieldsKeysList.forEach((element) => {
+      console.log("sssssssssss", element);
+      if (["d:date"].includes(element.dataType)) {
+        console.log(
+          "sssssssssss",
+          res.entry.properties[element.id].split("T")[0]
+        );
+
+        form[element.id].value = res.entry.properties[element.id].split("T")[0];
+      } else {
+        form[element.id].value = res.entry.properties[element.id];
+      }
+    });
+  });
 });
 function onSubmitClick() {
   let formId = "meta-data-form";
+  var form = document.getElementById(formId);
+
+  // return;
   let newProperties = { properties: {} };
   //   newProperties;
-  var form = document.getElementById(formId);
 
   newProperties.properties["cm:name"] = form["name"].value;
   newProperties.properties["cm:title"] = form["title"].value;
   newProperties.properties["cm:description"] = form["description"].value;
   newProperties.properties["cm:author"] = form["author"].value;
+  contentTypeFormFieldsKeysList.forEach((element) => {
+    // console.log("sssssssssss", );
+    newProperties.properties[element.id] = form[element.id].value;
+  });
   //   newProperties["cm:mimeType"] = form["mimetype"].value;
-  //   console.log("Ssssssssssss", newProperties);
+  // console.log("Ssssssssssss", newProperties);
+  // return;
   let validation = validateRequiredEmptyFields(newProperties, formId);
   if (validation.return) {
     alert(validation.msg);
@@ -42,7 +68,7 @@ function setInvalidClassToRequiredEmptyFields(formId) {
   let form = document.querySelectorAll(`#${formId} input`);
   //   let elementsArray = Array.from(form);
   for (let i = 0; i < form.length; i++) {
-    console.log(formId, form[i]);
+    // console.log(formId, form[i]);
     if (form[i].hasAttribute("required")) {
       form[i].classList.add("is-invalid");
     }

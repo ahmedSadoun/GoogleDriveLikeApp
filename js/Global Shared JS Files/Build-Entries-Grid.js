@@ -126,7 +126,7 @@ function buildColumns(entities, entityIndex) {
             class="btn  border-0"
             style="width: 100%;height:100% ;max-width: 90%;"
         >
-            <div class="d-flex align-content-aling">
+            <div class="d-flex">
                 <div class="l-o-c-qd " style="width: 100%" role="img" aria-label="Thumbnail">
                     <!-- Replace the default SVG with the generated thumbnail -->
                     <img id="file_${element.id}" mimeType=${element.content.mimeType} src="../Assets/pngwing.com.png" alt="../Assets/pngwing.com.png" style="max-width: 100px; max-height: 100px;">
@@ -164,14 +164,16 @@ function buildEntitiesGrid(entities, containerId) {
 
     entitiesBodyString =
       entitiesBodyString +
-      `<div class="row d-flex " style="min-width: 500px; height:100px; margin-top:70px">`;
+      `<div class="row d-flex " style="min-width: 500px; height:100px; ">`;
     let columns = buildColumns(entities, entityIndex);
     entityIndex = columns.entityIndex + 1;
     entitiesBodyString = entitiesBodyString + columns.entitiesColumnString;
     entitiesBodyString = entitiesBodyString + `</div>`;
+    entitiesBodyString = entitiesBodyString + `<br />` + `<br />` + `<br />`;
     // console.log(index, entitiesBodyString);
   }
-  document.getElementById(containerId).innerHTML = entitiesBodyString;
+  document.getElementById(containerId).innerHTML =
+    entitiesBodyString + `<br />` + `<br />`;
   // console.log("rrrrrrrrrrrrrrrrrrrr");
   generateThumNail();
 }

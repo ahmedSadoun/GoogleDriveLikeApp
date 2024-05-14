@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Date Input Example</title>
+  </head>
+  <body>
+    <form id="myForm">
+      <div class="form-group">
+        <label for="HR:DateOfBirth">Date Of Birth</label>
+        <input
+          name="HR:DateOfBirth"
+          type="date"
+          class="form-control"
+          id="HRDateOfBirth"
+        />
+      </div>
+    </form>
+
+    <script>
+      // Get the form element
+      var form = document.getElementById("myForm");
+
+      // Get the date input element
+      var dateOfBirthInput = form.querySelector("#HRDateOfBirth");
+
+      // Set the value to a specific date (YYYY-MM-DD format)
+      dateOfBirthInput.value = "2024-05-15";
+    </script>
+  </body>
+</html>

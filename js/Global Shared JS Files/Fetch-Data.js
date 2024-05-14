@@ -175,6 +175,21 @@ async function fetchFileContentMetaData(entry_id) {
     console.error("Error fetching file:", error);
   }
 }
+async function fetchTypeProperties(type_id) {
+  try {
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/fetchTypeProperties/" + type_id,
+      type: "GET",
+      dataType: "json",
+      // beforeSend: function (xhr) {
+      //   xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
+      // },
+    });
+    return res;
+  } catch (error) {
+    console.error("Error fetching file:", error);
+  }
+}
 async function updateFileContentMetaData(entry_id, body) {
   try {
     let res = await $.ajax({
