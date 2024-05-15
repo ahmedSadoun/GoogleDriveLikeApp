@@ -1,3 +1,22 @@
+window.addEventListener("load", async function () {
+  let entry_id = getEntryIdFromUrl().entry_id;
+  callHeaderDrawer();
+  let x = await Promise.all(
+    [
+      async () => {
+        let fileMetaData = await fetchEntryMetaData(entry_id);
+
+        previewFile(fileMetaData.entry);
+        // download(fileUrl, fileMetaData.entry);
+      },
+      async () => {
+        let navigationList = await fetchEntryNavigation(entry_id);
+        navigationDrawer(navigationList);
+      },
+    ].map((sequence) => sequence())
+  );
+});
+
 function getEntryIdFromUrl() {
   let urlString = window.location.href;
   let paramString = urlString.split("?")[1];
@@ -22,25 +41,6 @@ async function previewFile(fileMetaData) {
   ).innerHTML = ` <embed id="filePreviewer" src="${fileViewer.src}#toolbar=0"   type="${fileViewer.type}" width="800" height="800" />`;
   download(fileViewer.src, fileMetaData);
 }
-
-(async function () {
-  let entry_id = getEntryIdFromUrl().entry_id;
-  callHeaderDrawer();
-  let x = await Promise.all(
-    [
-      async () => {
-        let fileMetaData = await fetchEntryMetaData(entry_id);
-
-        previewFile(fileMetaData.entry);
-        // download(fileUrl, fileMetaData.entry);
-      },
-      async () => {
-        let navigationList = await fetchEntryNavigation(entry_id);
-        navigationDrawer(navigationList);
-      },
-    ].map((sequence) => sequence())
-  );
-})();
 
 function download(blobURL, metadata) {
   const fileLink = document.createElement("a");

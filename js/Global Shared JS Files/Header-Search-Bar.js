@@ -23,7 +23,7 @@ function headerDrawer() {
           placeholder="Search..."
           aria-label="Search"
         />
-        <button type="button" class="btn btn-dark mx-1" style="width: 20%">
+        <button type="button" class="btn btn-dark mx-1" onClick="onSearchButtonClick()" style="width: 20%">
           Search
         </button>
       </div>
@@ -34,3 +34,16 @@ function headerDrawer() {
     `;
   return header;
 }
+
+function callHeaderDrawer() {
+  let header = headerDrawer();
+  var headerElement = document.getElementById("header");
+  if (headerElement) {
+    // console.log("ss header");
+    headerElement.innerHTML = header;
+  } else {
+    console.warn("Element with ID 'header' does not exist.");
+  }
+}
+
+// callHeaderDrawer();

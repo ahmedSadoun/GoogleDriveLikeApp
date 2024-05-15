@@ -9,8 +9,7 @@ function getEntryIdFromUrl() {
   return params;
 }
 let currentEntities = [];
-
-(async function () {
+window.addEventListener("load", async function () {
   let entry_id = getEntryIdFromUrl().entry_id;
   entry_id = removeHashFromString(entry_id);
   callHeaderDrawer();
@@ -30,18 +29,7 @@ let currentEntities = [];
       },
     ].map((sequence) => sequence())
   );
-})();
-
-function onFolderClick(folder) {
-  let entry_id = folder.getAttribute("entry-identifier");
-
-  window.location.href = `./Entity-Page.html?entry_id=${entry_id}`;
-}
-
-function onFileClick(file) {
-  let entry_id = file.getAttribute("entry-identifier");
-  window.location.href = `../HTMl/Preview-file.html?entry_id=${entry_id}`;
-}
+});
 
 function onApproveCreateFolderClick() {
   let entry_id = getEntryIdFromUrl().entry_id;

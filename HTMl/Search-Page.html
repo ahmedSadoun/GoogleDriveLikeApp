@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search page</title>
+    <!-- <script rel="stylesheet" src="../CSS/master.css"></script> -->
+    <!-- <link rel="stylesheet" href="../CSS/master.css" /> -->
+    <script src="../js/Global Shared JS Files/Set-Page-Headers.js"></script>
+  </head>
+  <body>
+    <!-- HEADER START -->
+    <header
+      class="p-3 mb-3 border-bottom d-flex"
+      style="min-width: 500px"
+      id="header"
+    ></header>
+    <!-- HEADER END -->
+    <!-- ACTION LIST -->
+    <div id="actions-list" class="container d-flex justify-content-start m-3">
+      <!-- DELETE SELECTIONS BEGINS-->
+      <div>
+        <button
+          type="button"
+          onclick="deleteSelectionButtonClick(this)"
+          class="btn btn-danger"
+          data-bs-dismiss="upload-modal"
+        >
+          Delete
+        </button>
+      </div>
+      <!-- DELETE SELECTIONS ENDS-->
+    </div>
+    <div id="entitiesContainer" class="container px-4 text-center"></div>
+    <script src="../js/Search-page.js"></script>
+  </body>
+</html>
