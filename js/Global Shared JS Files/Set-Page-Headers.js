@@ -45,7 +45,6 @@ function setScriptTags() {
     "../js/Global Shared JS Files/Action-List.js",
     "../js/Global Shared JS Files/Header-Search-Bar.js",
     "../js/Global Shared JS Files/Router.js",
-    "../js/Global Shared JS Files/Search-Actions.js",
     "../js/Global Shared JS Files/Shared-Button-Click-Events.js",
     "../js/Global Shared JS Files/Navigation-Bar-Drawer.js",
   ];

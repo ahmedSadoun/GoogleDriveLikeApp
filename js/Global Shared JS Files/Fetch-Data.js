@@ -1,5 +1,5 @@
 let dataUrl = "http://localhost:3000";
-let rootEntities = [];
+// let rootEntities = [];
 async function fetchAlfrescoEntries(route) {
   let res = await $.ajax({
     url: dataUrl + route || "/",
@@ -127,6 +127,24 @@ async function createNewFolder(entry_id, folderName) {
     return res;
   } catch (error) {
     console.error("Error creating folder:", error);
+    return null; // Handle the error by returning null or any other appropriate value
+  }
+}
+async function searchNodes(query) {
+  try {
+    let data = {
+      queryValue: query,
+    };
+    // console.log(data);
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/searchNodes",
+      type: "POST",
+      data: JSON.stringify(data), // Convert data object to JSON string
+      contentType: "application/json", // Set the content type to application/json
+    });
+    return res.list.entries;
+  } catch (error) {
+    console.error("Error returning nodes:", error);
     return null; // Handle the error by returning null or any other appropriate value
   }
 }

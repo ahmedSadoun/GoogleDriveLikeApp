@@ -3,105 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bullet Points Grouped by Process</title>
-    <!-- <style>
-      /* Define the custom bullet point shape */
-      .custom-bullets {
-        content: "\2022"; /* Bullet point character */
-        color: black; /* Bullet point color */
-
-        margin-right: 10px; /* Adjust spacing between bullet point and text */
-      }
-      .bullet-group-title {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-    </style> -->
+    <title>Bootstrap Form Example</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
   </head>
   <body>
-    <div class="container mt-4">
-      <!-- Title for the bullet point groups -->
-      <h2>Terms and Conditions</h2>
+    <div class="container mt-5">
+      <form action="/submit" method="post">
+        <div class="form-group">
+          <label for="select1">Select Option 1:</label>
+          <select class="form-control" id="select1" name="option1">
+            <option value="option1_value1">Option 1</option>
+            <option value="option1_value2">Option 2</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
 
-      <!-- Unordered list for bullet points related to "Roaming" -->
-      <div>
-        <div id="title"></div>
-        <ul id="roamingList">
-          <!-- List items related to "Roaming" will be dynamically added here -->
-        </ul>
-      </div>
+        <div class="form-group">
+          <label for="select2">Select Option 2:</label>
+          <select class="form-control" id="select2" name="option2">
+            <option value="option2_value1">Option A</option>
+            <option value="option2_value2">Option B</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="inputField">Input Field:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inputField"
+            name="inputField"
+          />
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+          <label class="form-check-label" for="exampleCheck1"
+            >Check me out</label
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+      </form>
     </div>
 
-    <script>
-      // Your payload
-      let x = {
-        items: [
-          {
-            terms_id: 16,
-            process_id: 22,
-            terms_desc_en:
-              "SIM: Please note that the number you request to change package for, will be added under your contract.",
-            terms_desc_ar:
-              "شريحة: يرجى ملاحظة أنه سيتم إضافة الرقم الذي تطلب تغيير الباقة من أجله بموجب عقدك",
-            terms_order: 1,
-            sub_process: "Family",
-          },
-          {
-            terms_id: 4,
-            process_id: 22,
-            terms_desc_en:
-              "All the Roaming charges would be deducted from the salary if the amount is not settled.",
-            terms_desc_ar:
-              "سيتم خصم جميع رسوم التجوال من الراتب إذا لم يتم تسوية المبلغ",
-            terms_order: 1,
-            sub_process: "Roaming",
-          },
-          {
-            terms_id: 15,
-            process_id: 22,
-            terms_desc_en:
-              "Any additional amount used on VAS service will be charged directly to the employee’s outstanding amount and will be deducted from the employee’s monthly salary.",
-            terms_desc_ar:
-              "سيتم تحميل أي مبلغ إضافي يستخدم في خدمة VAS مباشرة على المبلغ المستحق للموظف وسيتم خصمه من الراتب الشهري للموظف",
-            terms_order: 2,
-            sub_process: "Roaming",
-          },
-          {
-            terms_id: 17,
-            process_id: 22,
-            terms_desc_en: "FTTH : Promotion period is permanent.",
-            terms_desc_ar: "فايبر : مدة الاستفادة من العرض دائمة ",
-            terms_order: 2,
-            sub_process: "Family",
-          },
-        ],
-      };
-
-      // Function to create list items grouped by process excluding "FTTH"
-      function createListItems(payload) {
-        // var familyList = document.getElementById("familyList");
-        var roamingList = document.getElementById("roamingList");
-        var bulletPointSectionTitle = document.getElementById("title");
-
-        payload.items.forEach(function (item) {
-          var modifiedSentence = item.terms_desc_en.trim();
-          // Remove "FTTH" if it exists from the sentence
-          var title = modifiedSentence.includes("FTTH :") ? "FTTH" : "";
-          bulletPointSectionTitle.innerHTML = title;
-          modifiedSentence = modifiedSentence.replace("FTTH :", "").trim();
-          // Check if the modified sentence is not empty
-          if (modifiedSentence !== "") {
-            // Check if the sub_process is "Family" or "Roaming"
-
-            var listItem = document.createElement("li");
-            listItem.textContent = modifiedSentence;
-            roamingList.appendChild(listItem);
-          }
-        });
-      }
-
-      // Call the function with the payload
-      createListItems(x);
-    </script>
+    <!-- Include Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

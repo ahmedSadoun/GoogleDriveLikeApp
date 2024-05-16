@@ -1,13 +1,3 @@
-function getEntryIdFromUrl() {
-  let urlString = window.location.href;
-  let paramString = urlString.split("?")[1];
-  let queryString = new URLSearchParams(paramString);
-  let params = {};
-  for (let pair of queryString.entries()) {
-    params[pair[0]] = pair[1];
-  }
-  return params;
-}
 let currentEntities = [];
 window.addEventListener("load", async function () {
   let entry_id = getEntryIdFromUrl().entry_id;

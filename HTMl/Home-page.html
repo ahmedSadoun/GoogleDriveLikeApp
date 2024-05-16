@@ -45,7 +45,6 @@
           type="button"
           onclick="onUploadButtonClick(this)"
           class="btn btn-primary mx-2"
-          data-bs-dismiss="upload-modal"
         >
           Upload
         </button>
@@ -57,7 +56,6 @@
           type="button"
           onclick="deleteSelectionButtonClick(this)"
           class="btn btn-danger"
-          data-bs-dismiss="upload-modal"
         >
           Delete
         </button>
@@ -161,49 +159,5 @@
       </div>
     </div>
     <!--Upload Modal Ends -->
-
-    <div class="modal" tabindex="-1" id="upload-modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title"></h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group mb-3">
-              <input
-                id="folder-name-inpur-field"
-                type="text"
-                class="form-control"
-                placeholder="Folder Name"
-                aria-label="Folder Name"
-              />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="upload-modal"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              onclick="onUploadButtonClick(this)"
-              class="btn btn-primary"
-              data-bs-dismiss="upload-modal"
-            >
-              Upload
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </body>
 </html>

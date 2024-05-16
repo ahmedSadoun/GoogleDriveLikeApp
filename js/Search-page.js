@@ -1,61 +1,60 @@
 // Instantly called function
 // used in order to be able to use async and await
-let homeRootEntities = [];
+let searchEntries = [];
 window.addEventListener("load", async function () {
-  homeRootEntities = await fetchAlfrescoEntries("/alFresco/root");
-  // console.log(homeRootEntities);
   callHeaderDrawer();
-  buildEntitiesGrid(homeRootEntities, "entitiesContainer");
+
+  let searchValue = getEntryIdFromUrl().searchValue;
+  setSearchField(searchValue);
+  if (searchValue.trim()) {
+    searchEntries = (await searchNodes(searchValue)) || [];
+    if (searchEntries.length <= 0) {
+      ifNoNodesExisted();
+    } else {
+      buildEntitiesGrid(searchEntries, "entitiesContainer");
+    }
+  }
+  // console.log(searchEntries);
 });
+// set search field to its value from url.
+function setSearchField(searchValue) {
+  //   let searchValue = getEntryIdFromUrl().searchValue;
+  document.getElementById("searchInput").value = searchValue;
+}
+function ifNoNodesExisted() {
+  let container = document.getElementById("entitiesContainer");
+  container.innerHTML = `<h1>No entries found!</h1>`;
+}
 // (();
 
-function onApproveCreateFolderClick() {
-  let folderName = document
-    .getElementById("folder-name-inpur-field")
-    .value.trim();
-  createNewFolder("-root-", folderName).then((res) => {
-    if (res.entry) {
-      document.getElementById("folder-name-inpur-field").value = "";
-      rerenderAfterNodeCreation(res);
-    }
-    // document.getElementById("entitiesContainer").;
-  });
-  // onCloseDialogClick();
-}
-function rerenderAfterNodeCreation(res) {
-  homeRootEntities.push(res);
-  // console.log(res);
-
-  buildEntitiesGrid(homeRootEntities, "entitiesContainer");
-}
 // On delete functions
 function removeSelectedEntries(selectionsIdsList) {
-  // Iterate through the homeRootEntities list
-  for (let i = 0; i < homeRootEntities.length; i++) {
+  // Iterate through the searchEntries list
+  for (let i = 0; i < searchEntries.length; i++) {
     // Get the id of the current item
-    let itemId = homeRootEntities[i].entry.id;
+    let itemId = searchEntries[i].entry.id;
 
     // Check if the id exists in the selectionsIdsList
     let existsInSelections = selectionsIdsList.some((id) => id === itemId);
 
-    // If the id exists in the selectionsIdsList, remove the item from homeRootEntities
+    // If the id exists in the selectionsIdsList, remove the item from searchEntries
     if (existsInSelections) {
-      homeRootEntities.splice(i, 1); // Remove the item from homeRootEntities
+      searchEntries.splice(i, 1); // Remove the item from searchEntries
       i--; // Adjust the loop counter since we removed an item
     }
   }
 
-  // Return the modified homeRootEntities list
-  return homeRootEntities;
+  // Return the modified searchEntries list
+  return searchEntries;
 }
 function rerenderAfterNodeDeletion(selectionIds) {
-  let afterDeletionHomeRootEntities = removeSelectedEntries(selectionIds);
-  // console.log("aaaaaaaaaaaaa", afterDeletionHomeRootEntities);
-  buildEntitiesGrid(afterDeletionHomeRootEntities, "entitiesContainer");
+  let afterDeletionsearchEntries = removeSelectedEntries(selectionIds);
+  // console.log("aaaaaaaaaaaaa", afterDeletionsearchEntries);
+  buildEntitiesGrid(afterDeletionsearchEntries, "entitiesContainer");
 }
 
 function checkIfFileExists(fileName) {
-  let result = homeRootEntities.some((element) => {
+  let result = searchEntries.some((element) => {
     return element.entry.name.toLowerCase() === fileName.toLowerCase();
   });
   return result;

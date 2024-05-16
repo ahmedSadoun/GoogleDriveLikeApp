@@ -56,29 +56,18 @@ function onPropertiesClick() {
   // console.log("SDfsadfadfasdf ", entry_id);
   window.location.href = `../HTMl/Meta-Data-Form.html?entry_id=${entry_id}`;
 }
-function createSelectOptions(payload) {
-  const entries = payload.list.entries;
-  const selectOptions = entries.map((entry) => {
-    const id = entry.entry.id;
-    const title = entry.entry.title;
-    return `<option value="${id}">${title}</option>`;
-  });
-  return selectOptions.join("");
-}
-function buildContentTypeSelectOptions(optionsList) {
-  let options = createSelectOptions(optionsList);
-  const selectElement = document.getElementById("content-type-select-id");
-  selectElement.innerHTML = options;
-}
+
 function onChangeContentTypeClick() {
   $("#exampleModalToggle").modal("show");
   fetchTypes().then((res) => {
     // console.log("SDfsafsa", $("#exampleModalToggle"));
     $("#exampleModalToggle").modal("show");
-    buildContentTypeSelectOptions(res);
+    buildSelectOptions(res, "content-type-select-id", createOptions);
   });
   // $("#xmodal").show();
 }
+
+
 // modal or dialog submit button
 
 function onSubmitContentTypeClick() {

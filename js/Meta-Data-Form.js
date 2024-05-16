@@ -52,7 +52,7 @@ function onSubmitClick() {
   }
   updateFileContentMetaData(entry_id, newProperties).then((res) => {
     if (res.entry) {
-      goToPage("Preview-file.html");
+      goToPage("Preview-file.html", {entry_id:entry_id });
     }
   });
 }

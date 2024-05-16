@@ -105,11 +105,19 @@ function buildColumns(entities, entityIndex) {
         `
         <div class="col mt-2 col-md-3 overflow-hidden" style="max-width: 25%;">
         <div class="card hover-effect " style="max-height:210px;min-height:210px ">
-          <input type="checkbox" entry-identifier="${element.id}" id="todoCheckbox" class="card-checkbox" style="width:20px;height:20px; max-height:20px;min-height:20px ">
-          <button onclick="onFileClick(this)" entry-identifier="${element.id}" type="button" class="btn border-0" style="width: 100%;height:100%;max-width: 90%;">
+          <input type="checkbox" entry-identifier="${
+            element.id
+          }" id="todoCheckbox" class="card-checkbox" style="width:20px;height:20px; max-height:20px;min-height:20px ">
+          <button onclick="onFileClick(this)" entry-identifier="${
+            element.id
+          }" type="button" class="btn border-0" style="width: 100%;height:100%;max-width: 90%;">
             <div class="card-body d-flex flex-column justify-content-between">
               <div class="d-flex justify-content-center">
-                <img id="file_${element.id}" mimeType="${element.content.mimeType}" src="../Assets/pngwing.com.png" alt="${element.name}" style="max-width: 100px; max-height: 100px;">
+                <img id="file_${element.id}" mimeType="${
+          element.content?.mimeType || ""
+        }" src="../Assets/pngwing.com.png" alt="${
+          element.name
+        }" style="max-width: 100px; max-height: 100px;">
               </div>
               <div class="text-center mt-2">${element.name}</div>
             </div>
