@@ -60,57 +60,6 @@ async function fetchFileContentThumbNail(entry_id, fileContentType) {
   }
 }
 
-// Function to fetch image and generate thumbnail
-async function fetchAndGenerateThumbnail(entry_id, maxWidth, maxHeight) {
-  try {
-    // Fetch the image
-    const response = await fetchFileContent(entry_id);
-    const blob = await response.blob();
-    // Create an image element
-    const img = new Image();
-
-    // Load image from blob URL
-    img.src = URL.createObjectURL(blob);
-
-    // Create a canvas to draw thumbnail
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // Wait for image to load
-    await new Promise((resolve) => {
-      img.onload = resolve;
-    });
-
-    // Calculate thumbnail dimensions while maintaining aspect ratio
-    let width = img.width;
-    let height = img.height;
-    const aspectRatio = width / height;
-    if (width > maxWidth) {
-      width = maxWidth;
-      height = width / aspectRatio;
-    }
-    if (height > maxHeight) {
-      height = maxHeight;
-      width = height * aspectRatio;
-    }
-
-    // Set canvas dimensions
-    canvas.width = width;
-    canvas.height = height;
-
-    // Draw image on canvas
-    ctx.drawImage(img, 0, 0, width, height);
-
-    // Get data URL of the thumbnail
-    const thumbnailUrl = canvas.toDataURL("image/jpeg");
-    // Return thumbnail URL
-    return thumbnailUrl;
-  } catch (error) {
-    console.error("Error fetching image and generating thumbnail:", error);
-    return null;
-  }
-}
-
 async function createNewFolder(entry_id, folderName) {
   try {
     let data = {
