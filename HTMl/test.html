@@ -3,56 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bootstrap Form Example</title>
-    <!-- Include Bootstrap CSS -->
     <link
-      rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
     />
+    <title>Action Column Example</title>
   </head>
   <body>
     <div class="container mt-5">
-      <form action="/submit" method="post">
-        <div class="form-group">
-          <label for="select1">Select Option 1:</label>
-          <select class="form-control" id="select1" name="option1">
-            <option value="option1_value1">Option 1</option>
-            <option value="option1_value2">Option 2</option>
-            <!-- Add more options as needed -->
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="select2">Select Option 2:</label>
-          <select class="form-control" id="select2" name="option2">
-            <option value="option2_value1">Option A</option>
-            <option value="option2_value2">Option B</option>
-            <!-- Add more options as needed -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="inputField">Input Field:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputField"
-            name="inputField"
-          />
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-          <label class="form-check-label" for="exampleCheck1"
-            >Check me out</label
-          >
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-      </form>
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>John</td>
+            <td>Doe</td>
+            <td>@johndoe</td>
+            <td>
+              <button class="btn btn-primary btn-sm">Edit</button>
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jane</td>
+            <td>Smith</td>
+            <td>@janesmith</td>
+            <td>
+              <button class="btn btn-primary btn-sm">Edit</button>
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Include Bootstrap JS (optional) -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <!-- Include Bootstrap CSS -->
+    <script src="../js/Global Shared JS Files/Set-Page-Headers.js"></script>
+    <script src="../js/Users-Management-page.js"></script>
+  </head>
+  <body>
+    <!-- HEADER START -->
+    <header
+      class="p-3 mb-3 border-bottom d-flex"
+      style="min-width: 500px"
+      id="header"
+    ></header>
+    <!-- HEADER END -->
+    <br />
+    <br />
+    <br />
+    <!-- <div class="container justify-content-start d-flex" style="width: 100%">
+      <div class="d-inline-flex mx-5 w-50">
+        <input
+          id="searchInput"
+          style="width: 80%"
+          type="search"
+          class="form-control"
+          placeholder="Search..."
+          aria-label="Search"
+        />
+        <button
+          type="button"
+          class="btn btn-dark mx-1"
+          onClick="onSearchUsersButtonClick()"
+          style="width: 20%"
+        >
+          Search
+        </button>
+      </div>
+    </div> -->
+    <div class="container justify-content-end d-flex" style="width: 100%">
+      <button
+        type="button"
+        class="btn btn-dark mx-1"
+        onClick="onCreateNewUserClick()"
+      >
+        Create New User
+      </button>
+    </div>
+    <div class="container mt-3">
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <!-- Rows will be inserted here dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Advanced Search Begins -->
+    <div
+      class="modal fade"
+      id="create-new-user-modal-Label"
+      aria-hidden="true"
+      aria-labelledby="upload-file-modalLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="create-new-user-modal-Label">
+              User Details
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <form class="needs-validation" novalidate id="user-details-form">
+                <div class="mb-3">
+                  <label for="first-name" class="form-label">First Name*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="first-name"
+                    name="firstName"
+                    required
+                    placeholder="First Name"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="last-name" class="form-label">Last Name*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="last-name"
+                    name="lastName"
+                    required
+                    placeholder="Last Name"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="user-name" class="form-label">User Name*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="user-name"
+                    name="id"
+                    required
+                    placeholder="Last Name"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email*</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    id="email"
+                    required
+                    placeholder="example@example.com"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password*</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Password"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              data-bs-target="#upload-file-modal"
+              onclick="onCloseCreateUserDialogClick()"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              onclick="onCreateUserDialogSubmitClick()"
+              class="btn btn-primary"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script></script>
+    <!--Advanced Search Ends -->
+  </body>
+</html>

@@ -130,6 +130,24 @@ async function createNewFolder(entry_id, folderName) {
     return null; // Handle the error by returning null or any other appropriate value
   }
 }
+async function createUser(userDetails) {
+  try {
+    let data = {
+      ...userDetails,
+    };
+    // console.log(data);
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/createUser",
+      type: "POST",
+      data: JSON.stringify(data), // Convert data object to JSON string
+      contentType: "application/json", // Set the content type to application/json
+    });
+    return res;
+  } catch (error) {
+    console.error("Error creating folder:", error);
+    return null; // Handle the error by returning null or any other appropriate value
+  }
+}
 async function searchNodes(query) {
   try {
     let data = {
@@ -206,6 +224,19 @@ async function fetchTypeProperties(type_id) {
     return res;
   } catch (error) {
     console.error("Error fetching file:", error);
+  }
+}
+async function fetchUsers(user_id) {
+  try {
+    let res = await $.ajax({
+      url: dataUrl + "/alFresco/getUsers/" + (user_id || ""),
+      type: "GET",
+      dataType: "json",
+    });
+    return res;
+  } catch (error) {
+    console.error("Error fetching file:", error);
+    return null;
   }
 }
 async function updateFileContentMetaData(entry_id, body) {
