@@ -8,6 +8,8 @@ window.addEventListener("load", async function () {
   // setSearchField(searchValue);
   if (searchValue.trim()) {
     searchEntries = (await searchNodes(searchValue)) || [];
+    setSearchResultCount(searchEntries.length);
+
     if (searchEntries.length <= 0) {
       ifNoNodesExisted();
     } else {
@@ -17,7 +19,10 @@ window.addEventListener("load", async function () {
   // console.log(searchEntries);
 });
 // set search field to its value from url.
-
+function setSearchResultCount(resultCount) {
+  let element = document.getElementById("results-meta-data-id");
+  element.innerHTML = `<span> ${resultCount}-results found</span>`;
+}
 function ifNoNodesExisted() {
   let container = document.getElementById("entitiesContainer");
   container.innerHTML = `<h1>No entries found!</h1>`;
