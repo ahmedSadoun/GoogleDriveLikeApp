@@ -15,7 +15,10 @@ function elementsFactory(elementProperty, elementKey) {
     <select name=${elementProperty.id} class="form-control form-select" id=${
       elementProperty.id
     }>
-     ${isMultiValuedf(elementProperty) && buildSelectOptions(elementProperty)}
+     ${
+       isMultiValuedf(elementProperty) &&
+       contentTypeBuildSelectOptions(elementProperty)
+     }
     </select>
     </div>`,
     "d:date": ` <div class="form-group">
@@ -38,7 +41,7 @@ function elementsFactory(elementProperty, elementKey) {
   return elements[elementKey];
 }
 
-function buildSelectOptions(list) {
+function contentTypeBuildSelectOptions(list) {
   //   console.log("list", list.constraints[0].parameters.allowedValues);
   list = list.constraints[0].parameters.allowedValues || [];
   //   return;
@@ -74,7 +77,6 @@ async function createFormFields(type_id) {
       let elementKey = isMultiValued
         ? property.dataType + "-list"
         : property.dataType;
-      console.log("element Key ", elementKey);
       let element = elementsFactory(property, elementKey);
       formFieldsKeysList.push({ id: property.id, dataType: property.dataType });
       form = form + element;

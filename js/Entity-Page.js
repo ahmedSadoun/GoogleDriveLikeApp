@@ -1,6 +1,6 @@
 let currentEntities = [];
 window.addEventListener("load", async function () {
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
   entry_id = removeHashFromString(entry_id);
   callHeaderDrawer();
   let x = await Promise.all(
@@ -20,26 +20,6 @@ window.addEventListener("load", async function () {
     ].map((sequence) => sequence())
   );
 });
-
-function onApproveCreateFolderClick() {
-  let entry_id = getEntryIdFromUrl().entry_id;
-  entry_id = removeHashFromString(entry_id);
-  let folderName = document
-    .getElementById("folder-name-inpur-field")
-    .value.trim();
-  createNewFolder(entry_id, folderName).then((res) => {
-    if (res.entry) {
-      document.getElementById("folder-name-inpur-field").value = "";
-      rerenderAfterNodeCreation(res);
-    }
-  });
-  // onCloseDialogClick();
-}
-// function onCloseDialogClick() {
-//   let myModal = new bootstrap.Modal(document.getElementById("modal"));
-//   myModal.hide();
-//   // console.log("Ssssssssss");
-// }
 
 function removeHashFromString(inputString) {
   // Use replace method with a regular expression to remove '#' characters
@@ -85,15 +65,16 @@ function rerenderAfterNodeDeletion(selectionIds) {
   buildEntitiesGrid(afterDeletionCurrentEntities, "entitiesContainer");
 }
 
-function deleteSelectionButtonClick() {
-  // selects and delete all of the checked entries.
-  deleteSelections().then((res) => {
-    rerenderAfterNodeDeletion(res);
-  });
+// function deleteSelectionButtonClick() {
+//   // selects and delete all of the checked entries.
+//   deleteSelections().then((res) => {
+//     rerenderAfterNodeDeletion(res);
+//   });
+// }
+
+function onCloseCreateFolderClick() {
+  document.getElementById("folder-name-inpur-field").value = "";
 }
-
-function onCloseUploadFileModalClick() {}
-
 function onUploadButtonClick() {
   // onCloseDialogClick();
   $("#upload-file-modal").modal("show");
@@ -103,7 +84,7 @@ function onUploadFileSubmitClick() {
 }
 function startUploadingFile() {
   const fileInput = document.getElementById("fileInput");
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
   entry_id = removeHashFromString(entry_id);
   const file = fileInput.files[0];
 

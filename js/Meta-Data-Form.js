@@ -1,4 +1,4 @@
-let entry_id = getEntryIdFromUrl().entry_id;
+let entry_id = getUrlPrams().entry_id;
 let contentTypeFormFieldsKeysList = [];
 window.addEventListener("load", async function () {
   fetchFileContentMetaData(entry_id).then((res) => {
@@ -52,7 +52,7 @@ function onSubmitClick() {
   }
   updateFileContentMetaData(entry_id, newProperties).then((res) => {
     if (res.entry) {
-      goToPage("Preview-file.html", {entry_id:entry_id });
+      goToPage("Preview-file.html", { entry_id: entry_id });
     }
   });
 }
@@ -73,7 +73,7 @@ function setInvalidClassToRequiredEmptyFields(formId) {
     }
   }
 }
-function getEntryIdFromUrl() {
+function getUrlPrams() {
   let urlString = window.location.href;
   let paramString = urlString.split("?")[1];
   let queryString = new URLSearchParams(paramString);
@@ -84,7 +84,7 @@ function getEntryIdFromUrl() {
   return params;
 }
 function onCancelClick() {
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
 
   goToPage("Preview-file.html", { entry_id: entry_id });
 }

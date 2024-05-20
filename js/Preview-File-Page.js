@@ -1,5 +1,5 @@
 window.addEventListener("load", async function () {
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
   callHeaderDrawer();
   let x = await Promise.all(
     [
@@ -17,7 +17,7 @@ window.addEventListener("load", async function () {
   );
 });
 
-function getEntryIdFromUrl() {
+function getUrlPrams() {
   let urlString = window.location.href;
   let paramString = urlString.split("?")[1];
   let queryString = new URLSearchParams(paramString);
@@ -29,7 +29,7 @@ function getEntryIdFromUrl() {
 }
 
 async function previewFile(fileMetaData) {
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
   let response = await fetchFileContent(entry_id);
   const blob = await response.blob();
   let fileViewer = {};
@@ -52,7 +52,7 @@ function download(blobURL, metadata) {
 }
 
 function onPropertiesClick() {
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
   // console.log("SDfsadfadfasdf ", entry_id);
   window.location.href = `../HTMl/Meta-Data-Form.html?entry_id=${entry_id}`;
 }
@@ -67,12 +67,11 @@ function onChangeContentTypeClick() {
   // $("#xmodal").show();
 }
 
-
 // modal or dialog submit button
 
 function onSubmitContentTypeClick() {
   // console.log("Submit Button");
-  let entry_id = getEntryIdFromUrl().entry_id;
+  let entry_id = getUrlPrams().entry_id;
   let contentType = document.getElementById("content-type-select-id").value;
   let body = {
     nodeType: contentType,

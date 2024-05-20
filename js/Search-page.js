@@ -4,8 +4,8 @@ let searchEntries = [];
 window.addEventListener("load", async function () {
   callHeaderDrawer();
 
-  let searchValue = getEntryIdFromUrl().searchValue;
-  setSearchField(searchValue);
+  let searchValue = getUrlPrams().searchValue;
+  // setSearchField(searchValue);
   if (searchValue.trim()) {
     searchEntries = (await searchNodes(searchValue)) || [];
     if (searchEntries.length <= 0) {
@@ -17,10 +17,7 @@ window.addEventListener("load", async function () {
   // console.log(searchEntries);
 });
 // set search field to its value from url.
-function setSearchField(searchValue) {
-  //   let searchValue = getEntryIdFromUrl().searchValue;
-  document.getElementById("searchInput").value = searchValue;
-}
+
 function ifNoNodesExisted() {
   let container = document.getElementById("entitiesContainer");
   container.innerHTML = `<h1>No entries found!</h1>`;
@@ -60,12 +57,13 @@ function checkIfFileExists(fileName) {
   return result;
 }
 
-function deleteSelectionButtonClick() {
-  deleteSelections().then((res) => {
-    rerenderAfterNodeDeletion(res);
-  });
-}
-
+// function deleteSelectionButtonClick() {
+//   deleteSelections().then((res) => {
+//     if (res && res.length > 0) {
+//       rerenderAfterNodeDeletion(res);
+//     }
+//   });
+// }
 // function callHeaderDrawer() {
 //   let header = headerDrawer();
 //   document.getElementById("header").innerHTML = header;

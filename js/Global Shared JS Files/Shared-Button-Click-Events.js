@@ -1,15 +1,30 @@
 function onFolderClick(folder) {
   let entry_id = folder.getAttribute("entry-identifier");
   //   window.location.href = `./Entity-Page.html?entry_id=${entry_id}`;
-  goToPage("Entity-Page.html", { entry_id: entry_id });
+  let searchValue = getUrlPrams().searchValue || "";
+  let paramObj = {
+    entry_id: entry_id,
+  };
+  if (searchValue) {
+    paramObj.searchValue = searchValue;
+  }
+  goToPage("Entity-Page.html", paramObj);
 }
 
 function onFileClick(file) {
   let entry_id = file.getAttribute("entry-identifier");
-  goToPage("Preview-file.html", { entry_id: entry_id });
+  // let searchValue = document.getElementById("searchInput").value;
+  let searchValue = getUrlPrams().searchValue || "";
+  let paramObj = {
+    entry_id: entry_id,
+  };
+  if (searchValue) {
+    paramObj.searchValue = searchValue;
+  }
+
+  goToPage("Preview-file.html", paramObj);
   //   window.location.href = `../HTMl/Preview-file.html?entry_id=${entry_id}`;
 }
-
 function onSearchButtonClick() {
   let searchValue = document.getElementById("searchInput").value;
   if (searchValue.trim()) {
@@ -58,11 +73,18 @@ function fillAdvancedSearchForm() {
   let advancedSearch = JSON.parse(sessionStorage.getItem("advancedSearchObj"));
   if (advancedSearch) {
     form["content-type"].value = advancedSearch["content-type"];
-    form["Search"].value = advancedSearch.Search;
     form["search-checkbox-id"].checked = advancedSearch["search-checkbox-id"];
+    form["Search"].value = advancedSearch.Search;
+
     if (form["content-type"].value) {
       getPropsAndBuildOptions(form["content-type"].value).then(() => {
         form["properties"].value = advancedSearch.properties;
+        // Invoke this function to build the search form based on the prop type.
+
+        buildDynamicSearchForm(form["properties"].value);
+        // set the value of the search after its filed has been created
+
+        form["Search"].value = advancedSearch.Search;
       });
     }
   }
@@ -94,12 +116,12 @@ function buildSearchValue(searchObj) {
   if (searchObj["search-checkbox-id"]) {
     // "=name:ahmed.saadoun"
     if (searchObj.properties) {
-      return `=${searchObj.properties}:${searchObj.Search}`;
+      return `EXACT(${searchObj.properties}:'${searchObj.Search}')`;
     }
-    return `=${searchObj.Search}`;
+    return `EXACT('${searchObj.Search}')`;
   }
   if (searchObj.properties) {
-    return `${searchObj.properties}:${searchObj.Search}`;
+    return `${searchObj.properties}:'${searchObj.Search}'`;
   }
   return `${searchObj.Search}`;
 }
@@ -111,14 +133,132 @@ async function onContentTypeSelectChange(event) {
 async function getPropsAndBuildOptions(value) {
   if (value) {
     let props = await fetchTypeProperties(value);
+    sessionStorage.setItem("Props", JSON.stringify(props));
     buildSelectOptions(props.entry, "properties", createPropsOptions);
   } else {
     buildSelectOptions([], "properties", createPropsOptions);
   }
 }
-// Advanced Search Functions Ends
+function getPropMetaData(id) {
+  let props = JSON.parse(sessionStorage.getItem("Props"));
+  let element;
+  for (let i = 0; i < props.entry.properties.length; i++) {
+    let element = props.entry.properties[i];
+    if (element.id === id) {
+      return element;
+    }
+  }
+  if (element) {
+    return element;
+  }
+  return null;
+}
+function onPropertyChange(event) {
+  console.log("event", event);
+  let value = event.value;
 
-function getEntryIdFromUrl() {
+  buildDynamicSearchForm(value);
+}
+function buildDynamicSearchForm(value) {
+  let propMetaData = getPropMetaData(value);
+  let element = ` <label for="Search">Search</label>
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search.."
+    id="Search"
+    name="Search"
+  />`;
+  if (propMetaData) {
+    let isMultiValued = advancedSearchIsMultiValuedf(propMetaData);
+    let elementKey = isMultiValued
+      ? propMetaData.dataType + "-list"
+      : propMetaData.dataType;
+    let resultElement = advancedSearchElementsFactory(propMetaData, elementKey);
+    if (resultElement) {
+      element = resultElement;
+    }
+  }
+
+  document.getElementById("dynamic-search-form").innerHTML = element;
+}
+function advancedSearchElementsFactory(elementProperty, elementKey) {
+  let elements = {
+    "d:text": ` 
+    <label for="Search">${elementProperty.title}</label>
+    <input
+      type="text"
+      class="form-control"
+      id="Search"
+      name=${elementProperty.id}
+            />
+        `,
+
+    "d:text-list": ` 
+    <label for="Search">${elementProperty.title}</label>
+    <select name="Search" class="form-control form-select" id=${
+      elementProperty.id
+    }>
+     ${
+       advancedSearchIsMultiValuedf(elementProperty) &&
+       buildAdvancedSearchOptions(elementProperty)
+     }
+    </select>
+   `,
+    "d:date": ` 
+  <label for="Search">${elementProperty.title}</label>
+  <input name="Search" type="date" class="form-control" id=${elementProperty.id} />
+  `,
+    "d:mltext": `
+   
+          <label for="Search">${elementProperty.title}</label>
+          <textarea id="Search" name=${elementProperty.id} class="form-control"></textarea>
+        
+    `,
+    "d:int": ``,
+    "d:long": ``,
+    "d:float": ``,
+    "d:double": ``,
+    "d:datetime": ``,
+    "d:boolean": ``,
+  };
+  return elements[elementKey];
+}
+function advancedSearchIsMultiValuedf(property) {
+  if (property.isMultiValued) {
+    return true;
+  } else if (property.constraints && property.constraints[0]?.type === "LIST") {
+    return true;
+  }
+  return false;
+}
+function buildAdvancedSearchOptions(list) {
+  //   console.log("list", list.constraints[0].parameters.allowedValues);
+  list = list.constraints[0].parameters.allowedValues || [];
+  //   return;
+  let optionsList = "";
+  list.forEach((element) => {
+    optionsList = optionsList + `<option value=${element}>${element}</option>`;
+  });
+  return optionsList;
+}
+function onResetClick(event) {
+  // console.log("Reset");
+  document.getElementById("advanced-search-form").reset();
+}
+// Advanced Search Functions Ends
+function deleteSelectionButtonClick() {
+  deleteSelections().then((res) => {
+    if (res && res.length > 0) {
+      rerenderAfterNodeDeletion(res);
+    }
+  });
+}
+
+function onCloseUploadFileModalClick() {
+  $("#fileInput").val("");
+}
+function getUrlPrams() {
   let urlString = window.location.href;
   let paramString = urlString.split("?")[1];
   let queryString = new URLSearchParams(paramString);
@@ -128,3 +268,23 @@ function getEntryIdFromUrl() {
   }
   return params;
 }
+
+// Create Folder Begins
+function onApproveCreateFolderClick() {
+  let entry_id = getUrlPrams().entry_id;
+  entry_id = removeHashFromString(entry_id);
+  let folderName = document
+    .getElementById("folder-name-inpur-field")
+    .value.trim();
+  createNewFolder(entry_id, folderName).then((res) => {
+    if (res.entry) {
+      document.getElementById("folder-name-inpur-field").value = "";
+      rerenderAfterNodeCreation(res);
+    }
+  });
+  // onCloseDialogClick();
+}
+function onCloseCreateFolderClick() {
+  document.getElementById("folder-name-inpur-field").value = "";
+}
+// Create Folder Ends

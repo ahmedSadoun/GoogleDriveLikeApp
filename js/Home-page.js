@@ -8,19 +8,6 @@ window.addEventListener("load", async function () {
   buildEntitiesGrid(homeRootEntities, "entitiesContainer");
 });
 
-function onApproveCreateFolderClick() {
-  let folderName = document
-    .getElementById("folder-name-inpur-field")
-    .value.trim();
-  createNewFolder("-root-", folderName).then((res) => {
-    if (res.entry) {
-      document.getElementById("folder-name-inpur-field").value = "";
-      rerenderAfterNodeCreation(res);
-    }
-    // document.getElementById("entitiesContainer").;
-  });
-  // onCloseDialogClick();
-}
 function rerenderAfterNodeCreation(res) {
   homeRootEntities.push(res);
   // console.log(res);
@@ -67,7 +54,7 @@ function startUploadingFile() {
     return;
   }
   // console.log("file is ", file.name);
-  let isFileExists = checkIfFileExists(file.name);
+  let isFileExists = checkIfFileExists(homeRootEntities, file.name);
   // console.log("isFileExists", isFileExists);
   if (isFileExists) {
     alert("The file you'r trying to upload is already existed");
@@ -83,19 +70,16 @@ function startUploadingFile() {
     }
   });
 }
-function checkIfFileExists(fileName) {
-  let result = homeRootEntities.some((element) => {
+function checkIfFileExists(entriesList, fileName) {
+  let result = entriesList.some((element) => {
     return element.entry.name.toLowerCase() === fileName.toLowerCase();
   });
   return result;
 }
 
-function deleteSelectionButtonClick() {
-  deleteSelections().then((res) => {
-    rerenderAfterNodeDeletion(res);
-  });
+function onCloseUploadFileModalClick() {
+  $("#fileInput").val("");
 }
-function onCloseUploadFileModalClick() {}
 
 // function callHeaderDrawer() {
 //   let header = headerDrawer();

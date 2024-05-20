@@ -22,7 +22,7 @@ async function deleteSelections() {
     let selections = getAllCheckedCheckboxes();
     if (selections && selections.length <= 0) {
       alert("Select which files to delete.");
-      return;
+      return [];
     }
     selections.forEach((element) => {
       let entry_id = element.getAttribute("entry-identifier");

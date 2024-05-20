@@ -75,10 +75,11 @@ function headerDrawer() {
                   <select
                     class="form-control form-select"
                     id="properties"
+                    onchange="onPropertyChange(this)"
                     name="properties"
                   ></select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="dynamic-search-form">
                   <label for="Search">Search</label>
                   <input
                     type="text"
@@ -106,6 +107,14 @@ function headerDrawer() {
             <button
               type="button"
               data-bs-target="#upload-file-modal"
+              onclick="onResetClick()"
+              class="btn btn-danger"
+            >
+              Reset
+            </button>
+            <button
+              type="button"
+              data-bs-target="#upload-file-modal"
               onclick="onCloseAdvancedSearchClick()"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
@@ -123,6 +132,8 @@ function headerDrawer() {
         </div>
       </div>
     </div>
+    <script>
+    </script>
     <!--Advanced Search Ends -->
     `;
   return header;
@@ -139,4 +150,19 @@ function callHeaderDrawer() {
   }
 }
 
+function getSearchValue() {
+  // let searchValue = document.getElementById("searchInput").value;
+  let searchValue = getUrlPrams().searchValue || "";
+  setSearchField(searchValue);
+}
+
+function setSearchField(searchValue) {
+  //   let searchValue = getUrlPrams().searchValue;
+  if (document.getElementById("searchInput")) {
+    document.getElementById("searchInput").value = searchValue;
+  }
+}
+window.addEventListener("load", async function () {
+  getSearchValue();
+});
 // callHeaderDrawer();
